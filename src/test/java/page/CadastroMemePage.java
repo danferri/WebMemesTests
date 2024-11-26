@@ -33,7 +33,10 @@ public class CadastroMemePage {
     public void cadastroMemeFromMeme(Meme meme) {
         Select selectTipo = new Select(driver.findElement(tipoMemeSelect));
         selectTipo.selectByValue(meme.getTipo().getString());
-
+        driver.findElement(urlMemeInput).sendKeys(meme.getUrl());
+        driver.findElement(tituloMemeInput).sendKeys(meme.getTitulo());
+        driver.findElement(descricaoMemeInput).sendKeys(meme.getDescricao());
+        driver.findElement(cadastrarMemeButton).click();
     }
 
 }
