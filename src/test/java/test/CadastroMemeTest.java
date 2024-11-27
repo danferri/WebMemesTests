@@ -43,7 +43,7 @@ public class CadastroMemeTest {
     class RegisterMemes {
         @Test
         @DisplayName("shouldSuccessfullyRegisterMeme")
-        void shouldSuccessfullyRegisterMeme() {
+        void shouldSuccessfullyRegisterMemeImage() {
             try {
                 Meme meme = new Meme();
                 meme.setTipo(TipoMeme.IMAGE);
@@ -72,7 +72,7 @@ public class CadastroMemeTest {
 
                 createMeme.cadastroMemeFromMeme(meme);
 
-                assertFalse(createMeme.checkMessageSuccessful());
+                assertTrue(createMeme.checkMessageErrorUrlType());
 
             } catch(TimeoutException ignored) {
                 Assertions.fail("Meme wasn't register");
@@ -91,7 +91,7 @@ public class CadastroMemeTest {
 
                 createMeme.cadastroMemeFromMeme(meme);
 
-                assertFalse(createMeme.checkMessageSuccessful());
+                assertTrue(createMeme.checkMessageErrorUrl());
 
             } catch(TimeoutException ignored) {
                 Assertions.fail("Meme wasn't register");
@@ -110,7 +110,7 @@ public class CadastroMemeTest {
 
                 createMeme.cadastroMemeFromMeme(meme);
 
-                assertFalse(createMeme.checkMessageSuccessful());
+                assertTrue(createMeme.checkMessageTitleError());
 
             } catch(TimeoutException ignored) {
                 Assertions.fail("Meme wasn't register");
@@ -129,7 +129,7 @@ public class CadastroMemeTest {
 
                 createMeme.cadastroMemeFromMeme(meme);
 
-                assertFalse(createMeme.checkMessageSuccessful());
+                assertTrue(createMeme.checkMessageErrorUrlType());
 
             } catch(TimeoutException ignored) {
                 Assertions.fail("Meme wasn't register");

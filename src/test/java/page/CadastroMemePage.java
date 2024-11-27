@@ -49,4 +49,31 @@ public class CadastroMemePage {
         }
     }
 
+    public boolean checkMessageErrorUrl() {
+        String message = "Por favor, insira uma URL válida.";
+        if(driver.findElement(messageSpam).getText().equals(message)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean checkMessageErrorUrlType() {
+        String message = "URL inválida para o tipo selecionado.";
+        if(driver.findElement(messageSpam).getText().equals(message)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean checkMessageTitleError() {
+        String message = "O título deve ter entre 3 e 50 caracteres.";
+        if(driver.findElement(messageSpam).getText().equals(message)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 }
