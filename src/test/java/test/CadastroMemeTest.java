@@ -79,6 +79,26 @@ public class CadastroMemeTest {
             }
         }
 
+        @Test
+        @DisplayName("Should not register meme image with a empty URL")
+        void shouldNotRegisterMemeImageWithEmptydUrl() {
+            try {
+                Meme meme = new Meme();
+                meme.setTipo(TipoMeme.IMAGE);
+                meme.setUrl("");
+                meme.setTitulo("Mustang");
+                meme.setDescricao("um carro");
+
+                createMeme.cadastroMemeFromMeme(meme);
+
+                assertFalse(createMeme.checkMessageSuccessful());
+
+            } catch(TimeoutException ignored) {
+                Assertions.fail("Meme wasn't register");
+            }
+        }
+
+
     }
 
 }
