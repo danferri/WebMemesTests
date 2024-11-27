@@ -194,6 +194,26 @@ public class CadastroMemeTest {
             }
         }
 
+        @Test
+        @DisplayName("Should report all erros when URL and title are empty.")
+        void shouldReportMorethanOneError() {
+            try {
+                Meme meme = new Meme();
+                meme.setTipo(TipoMeme.VIDEO);
+                meme.setUrl("");
+                meme.setTitulo("");
+                meme.setDescricao("um vídeo");
+
+                createMeme.cadastroMemeFromMeme(meme);
+
+                assertTrue(createMeme.checkMessageTitleErrorAndUrlError());
+
+
+            } catch (TimeoutException ignored) {
+                Assertions.fail("Meme wasn't register");
+            }
+        }
+
     }
 
 }
