@@ -117,6 +117,25 @@ public class CadastroMemeTest {
             }
         }
 
+        @Test
+        @DisplayName("Should not register meme image with a video URL")
+        void shouldNotRegisterMemeImageWithVideoUrl() {
+            try {
+                Meme meme = new Meme();
+                meme.setTipo(TipoMeme.IMAGE);
+                meme.setUrl("https://www.youtube.com/watch?v=PFooIMCTXG4&t=5s&ab_channel=CoisadeNerd");
+                meme.setTitulo("Mustang");
+                meme.setDescricao("um carro");
+
+                createMeme.cadastroMemeFromMeme(meme);
+
+                assertFalse(createMeme.checkMessageSuccessful());
+
+            } catch(TimeoutException ignored) {
+                Assertions.fail("Meme wasn't register");
+            }
+        }
+
     }
 
 }
