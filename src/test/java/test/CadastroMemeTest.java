@@ -13,7 +13,7 @@ import page.CadastroMemePage;
 
 import java.time.Duration;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class CadastroMemeTest {
     private WebDriver driver;
@@ -60,9 +60,25 @@ public class CadastroMemeTest {
             }
         }
 
+        @Test
+        @DisplayName("Should not register meme image without a valid URL")
+        void shouldNotRegisterMemeImageWithoutValidUrl() {
+            try {
+                Meme meme = new Meme();
+                meme.setTipo(TipoMeme.IMAGE);
+                meme.setUrl("https://www.google.com");
+                meme.setTitulo("Mustang");
+                meme.setDescricao("um carro");
 
+                createMeme.cadastroMemeFromMeme(meme);
+
+                assertFalse(createMeme.checkMessageSuccessful());
+
+            } catch(TimeoutException ignored) {
+                Assertions.fail("Meme wasn't register");
+            }
+        }
 
     }
-
 
 }
