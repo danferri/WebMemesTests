@@ -41,179 +41,190 @@ public class CadastroMemeTest {
     @Nested
     @DisplayName("Register meme page tests")
     class RegisterMemes {
-        @Test
-        @DisplayName("shouldSuccessfullyRegisterMeme")
-        void shouldSuccessfullyRegisterMemeImage() {
-            try {
-                Meme meme = new Meme();
-                meme.setTipo(TipoMeme.IMAGE);
-                meme.setUrl("https://quatrorodas.abril.com.br/wp-content/uploads/2022/09/Charge-67-Mustang-electric-06.webp?crop=1&resize=1212,909");
-                meme.setTitulo("Mustang");
-                meme.setDescricao("um carro");
 
-                createMeme.cadastroMemeFromMeme(meme);
+        @Nested
+        @DisplayName("Meme images tests")
+        class RegisterImagesMemes {
+            @Test
+            @DisplayName("shouldSuccessfullyRegisterMeme")
+            void shouldSuccessfullyRegisterMemeImage() {
+                try {
+                    Meme meme = new Meme();
+                    meme.setTipo(TipoMeme.IMAGE);
+                    meme.setUrl("https://quatrorodas.abril.com.br/wp-content/uploads/2022/09/Charge-67-Mustang-electric-06.webp?crop=1&resize=1212,909");
+                    meme.setTitulo("Mustang");
+                    meme.setDescricao("um carro");
 
-                assertTrue(createMeme.checkMessageSuccessful());
+                    createMeme.cadastroMemeFromMeme(meme);
 
-            } catch(TimeoutException ignored) {
-                Assertions.fail("Meme wasn't register");
+                    assertTrue(createMeme.checkMessageSuccessful());
+
+                } catch(TimeoutException ignored) {
+                    Assertions.fail("Meme wasn't register");
+                }
+            }
+
+            @Test
+            @DisplayName("Should not register meme image without a valid URL")
+            void shouldNotRegisterMemeImageWithoutValidUrl() {
+                try {
+                    Meme meme = new Meme();
+                    meme.setTipo(TipoMeme.IMAGE);
+                    meme.setUrl("https://www.google.com");
+                    meme.setTitulo("Mustang");
+                    meme.setDescricao("um carro");
+
+                    createMeme.cadastroMemeFromMeme(meme);
+
+                    assertTrue(createMeme.checkMessageErrorUrlType());
+
+                } catch(TimeoutException ignored) {
+                    Assertions.fail("Meme wasn't register");
+                }
+            }
+
+            @Test
+            @DisplayName("Should not register meme image with a empty URL")
+            void shouldNotRegisterMemeImageWithEmptydUrl() {
+                try {
+                    Meme meme = new Meme();
+                    meme.setTipo(TipoMeme.IMAGE);
+                    meme.setUrl("");
+                    meme.setTitulo("Mustang");
+                    meme.setDescricao("um carro");
+
+                    createMeme.cadastroMemeFromMeme(meme);
+
+                    assertTrue(createMeme.checkMessageErrorUrl());
+
+                } catch(TimeoutException ignored) {
+                    Assertions.fail("Meme wasn't register");
+                }
+            }
+
+            @Test
+            @DisplayName("Should not register meme image with a video URL")
+            void shouldNotRegisterMemeImageWithVideoUrl() {
+                try {
+                    Meme meme = new Meme();
+                    meme.setTipo(TipoMeme.IMAGE);
+                    meme.setUrl("https://www.youtube.com/watch?v=PFooIMCTXG4&t=5s&ab_channel=CoisadeNerd");
+                    meme.setTitulo("Mustang");
+                    meme.setDescricao("um carro");
+
+                    createMeme.cadastroMemeFromMeme(meme);
+
+                    assertTrue(createMeme.checkMessageErrorUrlType());
+
+                } catch(TimeoutException ignored) {
+                    Assertions.fail("Meme wasn't register");
+                }
             }
         }
 
-        @Test
-        @DisplayName("Should not register meme image without a valid URL")
-        void shouldNotRegisterMemeImageWithoutValidUrl() {
-            try {
-                Meme meme = new Meme();
-                meme.setTipo(TipoMeme.IMAGE);
-                meme.setUrl("https://www.google.com");
-                meme.setTitulo("Mustang");
-                meme.setDescricao("um carro");
+        @Nested
+        @DisplayName("Meme videos tests")
+        class RegisterVideosMemes {
+            @Test
+            @DisplayName("Should not register meme video with a image URL")
+            void shouldNotRegisterMemeVideoWithImageUrl() {
+                try {
+                    Meme meme = new Meme();
+                    meme.setTipo(TipoMeme.VIDEO);
+                    meme.setUrl("https://quatrorodas.abril.com.br/wp-content/uploads/2022/09/Charge-67-Mustang-electric-06.webp?crop=1&resize=1212,909");
+                    meme.setTitulo("Mustang");
+                    meme.setDescricao("um carro");
 
-                createMeme.cadastroMemeFromMeme(meme);
+                    createMeme.cadastroMemeFromMeme(meme);
 
-                assertTrue(createMeme.checkMessageErrorUrlType());
+                    assertTrue(createMeme.checkMessageErrorUrlType());
 
-            } catch(TimeoutException ignored) {
-                Assertions.fail("Meme wasn't register");
+                } catch(TimeoutException ignored) {
+                    Assertions.fail("Meme wasn't register");
+                }
+            }
+
+            @Test
+            @DisplayName("Should not register meme video with a empty URL")
+            void shouldNotRegisterMemeVideoWithEmptydUrl() {
+                try {
+                    Meme meme = new Meme();
+                    meme.setTipo(TipoMeme.VIDEO);
+                    meme.setUrl("");
+                    meme.setTitulo("Mustang");
+                    meme.setDescricao("um carro");
+
+                    createMeme.cadastroMemeFromMeme(meme);
+
+                    assertTrue(createMeme.checkMessageErrorUrl());
+
+                } catch(TimeoutException ignored) {
+                    Assertions.fail("Meme wasn't register");
+                }
+            }
+
+            @Test
+            @DisplayName("shouldSuccessfullyRegisterMeme")
+            void shouldSuccessfullyRegisterMemeVideo() {
+                try {
+                    Meme meme = new Meme();
+                    meme.setTipo(TipoMeme.VIDEO);
+                    meme.setUrl("https://www.youtube.com/watch?v=PFooIMCTXG4&t=5s&ab_channel=CoisadeNerd");
+                    meme.setTitulo("Coisa de Nerd");
+                    meme.setDescricao("um vídeo");
+
+                    createMeme.cadastroMemeFromMeme(meme);
+
+                    assertTrue(createMeme.checkMessageSuccessful());
+
+                } catch(TimeoutException ignored) {
+                    Assertions.fail("Meme wasn't register");
+                }
             }
         }
 
-        @Test
-        @DisplayName("Should not register meme image with a empty URL")
-        void shouldNotRegisterMemeImageWithEmptydUrl() {
-            try {
-                Meme meme = new Meme();
-                meme.setTipo(TipoMeme.IMAGE);
-                meme.setUrl("");
-                meme.setTitulo("Mustang");
-                meme.setDescricao("um carro");
+        @Nested
+        @DisplayName("General register meme tests")
+        class GeneralRegisterMemesTests {
 
-                createMeme.cadastroMemeFromMeme(meme);
+            @Test
+            @DisplayName("Should report all erros when URL and title are empty.")
+            void shouldReportMorethanOneError() {
+                try {
+                    Meme meme = new Meme();
+                    meme.setTipo(TipoMeme.VIDEO);
+                    meme.setUrl("");
+                    meme.setTitulo("");
+                    meme.setDescricao("um vídeo");
 
-                assertTrue(createMeme.checkMessageErrorUrl());
+                    createMeme.cadastroMemeFromMeme(meme);
 
-            } catch(TimeoutException ignored) {
-                Assertions.fail("Meme wasn't register");
+                    assertTrue(createMeme.checkMessageTitleErrorAndUrlError());
+
+
+                } catch (TimeoutException ignored) {
+                    Assertions.fail("Meme wasn't register");
+                }
+            }
+
+            @Test
+            @DisplayName("Should not register meme image with a empty title")
+            void shouldNotRegisterMemeImageWithEmptyTitle() {
+                try {
+                    Meme meme = new Meme();
+                    meme.setTipo(TipoMeme.IMAGE);
+                    meme.setUrl("https://quatrorodas.abril.com.br/wp-content/uploads/2022/09/Charge-67-Mustang-electric-06.webp?crop=1&resize=1212,909");
+                    meme.setTitulo("");
+                    meme.setDescricao("um carro");
+
+                    createMeme.cadastroMemeFromMeme(meme);
+
+                    assertTrue(createMeme.checkMessageTitleError());
+
+                } catch(TimeoutException ignored) {
+                    Assertions.fail("Meme wasn't register");
+                }
             }
         }
-
-        @Test
-        @DisplayName("Should not register meme image with a empty title")
-        void shouldNotRegisterMemeImageWithEmptyTitle() {
-            try {
-                Meme meme = new Meme();
-                meme.setTipo(TipoMeme.IMAGE);
-                meme.setUrl("https://quatrorodas.abril.com.br/wp-content/uploads/2022/09/Charge-67-Mustang-electric-06.webp?crop=1&resize=1212,909");
-                meme.setTitulo("");
-                meme.setDescricao("um carro");
-
-                createMeme.cadastroMemeFromMeme(meme);
-
-                assertTrue(createMeme.checkMessageTitleError());
-
-            } catch(TimeoutException ignored) {
-                Assertions.fail("Meme wasn't register");
-            }
-        }
-
-        @Test
-        @DisplayName("Should not register meme image with a video URL")
-        void shouldNotRegisterMemeImageWithVideoUrl() {
-            try {
-                Meme meme = new Meme();
-                meme.setTipo(TipoMeme.IMAGE);
-                meme.setUrl("https://www.youtube.com/watch?v=PFooIMCTXG4&t=5s&ab_channel=CoisadeNerd");
-                meme.setTitulo("Mustang");
-                meme.setDescricao("um carro");
-
-                createMeme.cadastroMemeFromMeme(meme);
-
-                assertTrue(createMeme.checkMessageErrorUrlType());
-
-            } catch(TimeoutException ignored) {
-                Assertions.fail("Meme wasn't register");
-            }
-        }
-
-
-        @Test
-        @DisplayName("Should not register meme video with a image URL")
-        void shouldNotRegisterMemeVideoWithImageUrl() {
-            try {
-                Meme meme = new Meme();
-                meme.setTipo(TipoMeme.VIDEO);
-                meme.setUrl("https://quatrorodas.abril.com.br/wp-content/uploads/2022/09/Charge-67-Mustang-electric-06.webp?crop=1&resize=1212,909");
-                meme.setTitulo("Mustang");
-                meme.setDescricao("um carro");
-
-                createMeme.cadastroMemeFromMeme(meme);
-
-                assertTrue(createMeme.checkMessageErrorUrlType());
-
-            } catch(TimeoutException ignored) {
-                Assertions.fail("Meme wasn't register");
-            }
-        }
-
-        @Test
-        @DisplayName("Should not register meme video with a empty URL")
-        void shouldNotRegisterMemeVideoWithEmptydUrl() {
-            try {
-                Meme meme = new Meme();
-                meme.setTipo(TipoMeme.VIDEO);
-                meme.setUrl("");
-                meme.setTitulo("Mustang");
-                meme.setDescricao("um carro");
-
-                createMeme.cadastroMemeFromMeme(meme);
-
-                assertTrue(createMeme.checkMessageErrorUrl());
-
-            } catch(TimeoutException ignored) {
-                Assertions.fail("Meme wasn't register");
-            }
-        }
-
-        @Test
-        @DisplayName("shouldSuccessfullyRegisterMeme")
-        void shouldSuccessfullyRegisterMemeVideo() {
-            try {
-                Meme meme = new Meme();
-                meme.setTipo(TipoMeme.VIDEO);
-                meme.setUrl("https://www.youtube.com/watch?v=PFooIMCTXG4&t=5s&ab_channel=CoisadeNerd");
-                meme.setTitulo("Coisa de Nerd");
-                meme.setDescricao("um vídeo");
-
-                createMeme.cadastroMemeFromMeme(meme);
-
-                assertTrue(createMeme.checkMessageSuccessful());
-
-            } catch(TimeoutException ignored) {
-                Assertions.fail("Meme wasn't register");
-            }
-        }
-
-        @Test
-        @DisplayName("Should report all erros when URL and title are empty.")
-        void shouldReportMorethanOneError() {
-            try {
-                Meme meme = new Meme();
-                meme.setTipo(TipoMeme.VIDEO);
-                meme.setUrl("");
-                meme.setTitulo("");
-                meme.setDescricao("um vídeo");
-
-                createMeme.cadastroMemeFromMeme(meme);
-
-                assertTrue(createMeme.checkMessageTitleErrorAndUrlError());
-
-
-            } catch (TimeoutException ignored) {
-                Assertions.fail("Meme wasn't register");
-            }
-        }
-
     }
-
 }
