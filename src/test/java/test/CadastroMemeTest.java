@@ -98,6 +98,24 @@ public class CadastroMemeTest {
             }
         }
 
+        @Test
+        @DisplayName("Should not register meme image with a empty title")
+        void shouldNotRegisterMemeImageWithEmptyTitle() {
+            try {
+                Meme meme = new Meme();
+                meme.setTipo(TipoMeme.IMAGE);
+                meme.setUrl("https://quatrorodas.abril.com.br/wp-content/uploads/2022/09/Charge-67-Mustang-electric-06.webp?crop=1&resize=1212,909");
+                meme.setTitulo("");
+                meme.setDescricao("um carro");
+
+                createMeme.cadastroMemeFromMeme(meme);
+
+                assertFalse(createMeme.checkMessageSuccessful());
+
+            } catch(TimeoutException ignored) {
+                Assertions.fail("Meme wasn't register");
+            }
+        }
 
     }
 
