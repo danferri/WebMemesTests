@@ -136,6 +136,27 @@ public class CadastroMemeTest {
             }
         }
 
+
+        @Test
+        @DisplayName("Should not register meme video with a image URL")
+        void shouldNotRegisterMemeVideoWithImageUrl() {
+            try {
+                Meme meme = new Meme();
+                meme.setTipo(TipoMeme.VIDEO);
+                meme.setUrl("https://quatrorodas.abril.com.br/wp-content/uploads/2022/09/Charge-67-Mustang-electric-06.webp?crop=1&resize=1212,909");
+                meme.setTitulo("Mustang");
+                meme.setDescricao("um carro");
+
+                createMeme.cadastroMemeFromMeme(meme);
+
+                assertTrue(createMeme.checkMessageErrorUrlType());
+
+            } catch(TimeoutException ignored) {
+                Assertions.fail("Meme wasn't register");
+            }
+        }
+
+
     }
 
 }
