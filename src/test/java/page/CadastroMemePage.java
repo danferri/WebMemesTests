@@ -14,6 +14,7 @@ public class CadastroMemePage {
     private final By descricaoMemeInput = By.xpath("//*[@id=\"comment\"]");
     private final By cadastrarMemeButton = By.xpath("//*[@id=\"memeForm\"]/button");
     private final By visualizarMemesLink = By.xpath("/html/body/div[1]/a");
+    private final By messageSpam = By.xpath("//*[@id=\"message\"]");
 
 
 
@@ -37,6 +38,15 @@ public class CadastroMemePage {
         driver.findElement(tituloMemeInput).sendKeys(meme.getTitulo());
         driver.findElement(descricaoMemeInput).sendKeys(meme.getDescricao());
         driver.findElement(cadastrarMemeButton).click();
+    }
+
+    public boolean checkMessageSuccessful() {
+        String message = "Meme cadastrado com sucesso!";
+        if(driver.findElement(messageSpam).getText().equals(message)) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
 }
