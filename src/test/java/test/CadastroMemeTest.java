@@ -38,22 +38,31 @@ public class CadastroMemeTest {
         driver.quit();
     }
 
-    @Test
-    @DisplayName("shouldSuccessfullyRegisterMeme")
-    void shouldSuccessfullyRegisterMeme() {
-        try {
-            Meme meme = new Meme();
-            meme.setTipo(TipoMeme.IMAGE);
-            meme.setUrl("https://quatrorodas.abril.com.br/wp-content/uploads/2022/09/Charge-67-Mustang-electric-06.webp?crop=1&resize=1212,909");
-            meme.setTitulo("Mustang");
-            meme.setDescricao("um carro");
+    @Nested
+    @DisplayName("Register meme page tests")
+    class RegisterMemes {
+        @Test
+        @DisplayName("shouldSuccessfullyRegisterMeme")
+        void shouldSuccessfullyRegisterMeme() {
+            try {
+                Meme meme = new Meme();
+                meme.setTipo(TipoMeme.IMAGE);
+                meme.setUrl("https://quatrorodas.abril.com.br/wp-content/uploads/2022/09/Charge-67-Mustang-electric-06.webp?crop=1&resize=1212,909");
+                meme.setTitulo("Mustang");
+                meme.setDescricao("um carro");
 
-            createMeme.cadastroMemeFromMeme(meme);
+                createMeme.cadastroMemeFromMeme(meme);
 
-            assertTrue(createMeme.checkMessageSuccessful());
+                assertTrue(createMeme.checkMessageSuccessful());
 
-        } catch(TimeoutException ignored) {
-            Assertions.fail("Meme wasn't register");
+            } catch(TimeoutException ignored) {
+                Assertions.fail("Meme wasn't register");
+            }
         }
+
+
+
     }
+
+
 }
