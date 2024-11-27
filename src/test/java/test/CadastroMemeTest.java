@@ -226,5 +226,18 @@ public class CadastroMemeTest {
                 }
             }
         }
+
+        @Nested
+        @DisplayName("UI register meme tests")
+        class UiRegisterMemeTests {
+
+            @Test
+            @DisplayName("Should change page when click view registered memes")
+            void shouldChangePageWhenClickViewRegisteredMemes() {
+                createMeme.goToMemesCadastradosPage();
+
+                assertEquals("https://webmemes.devhub.dev.br/visualizar.html", driver.getCurrentUrl());
+            }
+        }
     }
 }
