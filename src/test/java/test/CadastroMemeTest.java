@@ -175,6 +175,25 @@ public class CadastroMemeTest {
             }
         }
 
+        @Test
+        @DisplayName("shouldSuccessfullyRegisterMeme")
+        void shouldSuccessfullyRegisterMemeVideo() {
+            try {
+                Meme meme = new Meme();
+                meme.setTipo(TipoMeme.VIDEO);
+                meme.setUrl("https://www.youtube.com/watch?v=PFooIMCTXG4&t=5s&ab_channel=CoisadeNerd");
+                meme.setTitulo("Coisa de Nerd");
+                meme.setDescricao("um vídeo");
+
+                createMeme.cadastroMemeFromMeme(meme);
+
+                assertTrue(createMeme.checkMessageSuccessful());
+
+            } catch(TimeoutException ignored) {
+                Assertions.fail("Meme wasn't register");
+            }
+        }
+
     }
 
 }
