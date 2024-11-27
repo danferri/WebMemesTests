@@ -1,5 +1,7 @@
 package model;
 
+import faker.MemeFaker;
+
 public class Meme {
     private TipoMeme tipo;
     private String url;
@@ -16,6 +18,41 @@ public class Meme {
         this.titulo = titulo;
         this.descricao = descricao;
     }
+
+    public static Meme FromFakerVideo() {
+        Meme meme = new Meme();
+
+        meme.tipo = TipoMeme.VIDEO;
+        meme.url = MemeFaker.getUrlVideos();
+        meme.titulo = MemeFaker.getTitle();
+        meme.descricao =MemeFaker.getDescricao();
+        return meme;
+    }
+
+    public static Meme FromFakerImage() {
+        Meme meme = new Meme();
+
+        meme.tipo = TipoMeme.IMAGE;
+        meme.url = MemeFaker.getUrlImage();
+        meme.titulo = MemeFaker.getTitle();
+        meme.descricao =MemeFaker.getDescricao();
+        return meme;
+    }
+
+    public static Meme FromFaker() {
+        Meme meme = new Meme();
+
+        meme.tipo = MemeFaker.getMemeType();
+        if(meme.tipo == TipoMeme.IMAGE) {
+            meme.url = MemeFaker.getUrlImage();
+        } else {
+            meme.url = MemeFaker.getUrlVideos();
+        }
+        meme.titulo = MemeFaker.getTitle();
+        meme.descricao =MemeFaker.getDescricao();
+        return meme;
+    }
+
 
     public TipoMeme getTipo() {
         return tipo;
