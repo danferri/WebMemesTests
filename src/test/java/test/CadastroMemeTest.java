@@ -247,8 +247,8 @@ public class CadastroMemeTest {
             }
 
             @Test
-            @DisplayName("should not register meme with title longer than fifith characters.")
-            void shouldNotRegisterMemeWithTitleLongerThanFifithCharacters() {
+            @DisplayName("should not register meme with title longer than fifty characters.")
+            void shouldNotRegisterMemeWithTitleLongerThanFiftyCharacters() {
                 try {
                     Meme meme = new Meme();
                     meme.setTipo(TipoMeme.IMAGE);
@@ -266,8 +266,8 @@ public class CadastroMemeTest {
             }
 
             @Test
-            @DisplayName("should not register meme with description longer than fifith characters.")
-            void shouldNotRegisterMemeWithDescriptionLongerThanFifithCharacters() {
+            @DisplayName("should not register meme with description longer than fifty characters.")
+            void shouldNotRegisterMemeWithDescriptionLongerThanFiftyCharacters() {
                 try {
                     Meme meme = new Meme();
                     meme.setTipo(TipoMeme.IMAGE);
