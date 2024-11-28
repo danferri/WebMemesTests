@@ -42,47 +42,28 @@ public class CadastroMemePage {
 
     public boolean checkMessageSuccessful() {
         String message = "Meme cadastrado com sucesso!";
-        if(driver.findElement(messageSpam).getText().equals(message)) {
-            return true;
-        } else {
-            return false;
-        }
+        return driver.findElement(messageSpam).getText().equals(message);
     }
 
     public boolean checkMessageErrorUrl() {
         String message = "Por favor, insira uma URL válida.";
-        if(driver.findElement(messageSpam).getText().equals(message)) {
-            return true;
-        } else {
-            return false;
-        }
+        return driver.findElement(messageSpam).getText().equals(message);
     }
 
     public boolean checkMessageErrorUrlType() {
         String message = "URL inválida para o tipo selecionado.";
-        if(driver.findElement(messageSpam).getText().equals(message)) {
-            return true;
-        } else {
-            return false;
-        }
+        return driver.findElement(messageSpam).getText().equals(message);
     }
 
     public boolean checkMessageTitleError() {
         String message = "O título deve ter entre 3 e 50 caracteres.";
-        if(driver.findElement(messageSpam).getText().equals(message)) {
-            return true;
-        } else {
-            return false;
-        }
+        return driver.findElement(messageSpam).getText().equals(message);
+
     }
 
-    public boolean checkMessageTitleErrorAndUrlError() {
-        String message = "O título deve ter entre 3 e 50 caracteres.\n Por favor, insira uma URL válida.";
-        if(driver.findElement(messageSpam).getText().equals(message)) {
-            return true;
-        } else {
-            return false;
-        }
-    }
+//    public boolean checkMessageTitleErrorAndUrlError() {
+//        String message = "O título deve ter entre 3 e 50 caracteres.\n Por favor, insira uma URL válida.";
+//        return driver.findElement(messageSpam).getText().equals(message);
+//    }
 
 }
