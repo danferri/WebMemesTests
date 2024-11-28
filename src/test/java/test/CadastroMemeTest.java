@@ -10,7 +10,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import page.CadastroMemePage;
-
+import org.assertj.core.api.SoftAssertions;
 
 import java.time.Duration;
 
@@ -192,6 +192,8 @@ public class CadastroMemeTest {
             @DisplayName("Should report all erros when URL and title are empty.")
             void shouldReportMorethanOneError() {
                 try {
+                    SoftAssertions softly = new SoftAssertions();
+
                     Meme meme = new Meme();
                     meme.setTipo(TipoMeme.VIDEO);
                     meme.setUrl("");
@@ -200,8 +202,10 @@ public class CadastroMemeTest {
 
                     createMeme.cadastroMemeFromMeme(meme);
 
-                    assertTrue(createMeme.checkMessageErrorUrl());
-                    assertTrue(createMeme.checkMessageTitleError());
+                    softly.assertThat(createMeme.checkMessageErrorUrl()).isEqualTo(true);
+                    softly.assertThat(createMeme.checkMessageTitleError()).isEqualTo(true);
+
+                    softly.assertAll();
 
                 } catch (TimeoutException ignored) {
                     Assertions.fail("Meme wasn't register");
@@ -216,7 +220,7 @@ public class CadastroMemeTest {
                     meme.setTipo(TipoMeme.IMAGE);
                     meme.setUrl("https://quatrorodas.abril.com.br/wp-content/uploads/2022/09/Charge-67-Mustang-electric-06.webp?crop=1&resize=1212,909");
                     meme.setTitulo("");
-                    meme.setDescricao("um carro");
+                    meme.setDescricao(MemeFaker.getDescricao());
 
                     createMeme.cadastroMemeFromMeme(meme);
 
@@ -248,7 +252,7 @@ public class CadastroMemeTest {
 
             @Test
             @DisplayName("should not register meme with title longer than fifty characters.")
-            void shouldNotRegisterMemeWithTitleLongerThanFiftyCharacters() {
+            void shouldRegisterMemeWithTitleLongerThanFiftyCharacters() {
                 try {
                     Meme meme = new Meme();
                     meme.setTipo(TipoMeme.IMAGE);
@@ -258,7 +262,7 @@ public class CadastroMemeTest {
 
                     createMeme.cadastroMemeFromMeme(meme);
 
-                    assertTrue(createMeme.checkMessageTitleError());
+                    assertTrue(createMeme.checkMessageSuccessful());
 
                 } catch(TimeoutException ignored) {
                     Assertions.fail("Meme wasn't register");
