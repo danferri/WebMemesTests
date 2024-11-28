@@ -199,8 +199,8 @@ public class CadastroMemeTest {
 
                     createMeme.cadastroMemeFromMeme(meme);
 
-                    assertTrue(createMeme.checkMessageTitleErrorAndUrlError());
-
+                    assertTrue(createMeme.checkMessageErrorUrl());
+                    assertTrue(createMeme.checkMessageTitleError());
 
                 } catch (TimeoutException ignored) {
                     Assertions.fail("Meme wasn't register");
