@@ -264,6 +264,26 @@ public class CadastroMemeTest {
                     Assertions.fail("Meme wasn't register");
                 }
             }
+
+            @Test
+            @DisplayName("should not register meme with description longer than fifith characters.")
+            void shouldNotRegisterMemeWithDescriptionLongerThanFifithCharacters() {
+                try {
+                    Meme meme = new Meme();
+                    meme.setTipo(TipoMeme.IMAGE);
+                    meme.setUrl("https://quatrorodas.abril.com.br/wp-content/uploads/2022/09/Charge-67-Mustang-electric-06.webp?crop=1&resize=1212,909");
+                    meme.setTitulo(MemeFaker.getTitle());
+                    meme.setDescricao(MemeFaker.getLongDescricao());
+
+                    createMeme.cadastroMemeFromMeme(meme);
+
+                    assertTrue(createMeme.checkMessageDescriptionError());
+
+                } catch(TimeoutException ignored) {
+                    Assertions.fail("Meme wasn't register");
+                }
+            }
+
         }
 
         @Nested
