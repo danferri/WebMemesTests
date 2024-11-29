@@ -53,8 +53,8 @@ public class CadastroMemeTest {
                     Meme meme = new Meme();
                     meme.setTipo(TipoMeme.IMAGE);
                     meme.setUrl("https://quatrorodas.abril.com.br/wp-content/uploads/2022/09/Charge-67-Mustang-electric-06.webp?crop=1&resize=1212,909");
-                    meme.setTitulo("Mustang");
-                    meme.setDescricao("um carro");
+                    meme.setTitulo(MemeFaker.getValidTitle());
+                    meme.setDescricao(MemeFaker.getValidDescricao());
 
                     createMeme.cadastroMemeFromMeme(meme);
 
@@ -72,8 +72,8 @@ public class CadastroMemeTest {
                     Meme meme = new Meme();
                     meme.setTipo(TipoMeme.IMAGE);
                     meme.setUrl("https://www.google.com");
-                    meme.setTitulo("Mustang");
-                    meme.setDescricao("um carro");
+                    meme.setTitulo(MemeFaker.getValidTitle());
+                    meme.setDescricao(MemeFaker.getValidDescricao());
 
                     createMeme.cadastroMemeFromMeme(meme);
 
@@ -91,8 +91,8 @@ public class CadastroMemeTest {
                     Meme meme = new Meme();
                     meme.setTipo(TipoMeme.IMAGE);
                     meme.setUrl("");
-                    meme.setTitulo("Mustang");
-                    meme.setDescricao("um carro");
+                    meme.setTitulo(MemeFaker.getValidTitle());
+                    meme.setDescricao(MemeFaker.getValidDescricao());
 
                     createMeme.cadastroMemeFromMeme(meme);
 
@@ -110,8 +110,8 @@ public class CadastroMemeTest {
                     Meme meme = new Meme();
                     meme.setTipo(TipoMeme.IMAGE);
                     meme.setUrl("https://www.youtube.com/watch?v=PFooIMCTXG4&t=5s&ab_channel=CoisadeNerd");
-                    meme.setTitulo("Mustang");
-                    meme.setDescricao("um carro");
+                    meme.setTitulo(MemeFaker.getValidTitle());
+                    meme.setDescricao(MemeFaker.getValidDescricao());
 
                     createMeme.cadastroMemeFromMeme(meme);
 
@@ -133,8 +133,8 @@ public class CadastroMemeTest {
                     Meme meme = new Meme();
                     meme.setTipo(TipoMeme.VIDEO);
                     meme.setUrl("https://quatrorodas.abril.com.br/wp-content/uploads/2022/09/Charge-67-Mustang-electric-06.webp?crop=1&resize=1212,909");
-                    meme.setTitulo("Mustang");
-                    meme.setDescricao("um carro");
+                    meme.setTitulo(MemeFaker.getValidTitle());
+                    meme.setDescricao(MemeFaker.getValidDescricao());
 
                     createMeme.cadastroMemeFromMeme(meme);
 
@@ -152,8 +152,8 @@ public class CadastroMemeTest {
                     Meme meme = new Meme();
                     meme.setTipo(TipoMeme.VIDEO);
                     meme.setUrl("");
-                    meme.setTitulo("Mustang");
-                    meme.setDescricao("um carro");
+                    meme.setTitulo(MemeFaker.getValidTitle());
+                    meme.setDescricao(MemeFaker.getValidDescricao());
 
                     createMeme.cadastroMemeFromMeme(meme);
 
@@ -171,8 +171,8 @@ public class CadastroMemeTest {
                     Meme meme = new Meme();
                     meme.setTipo(TipoMeme.VIDEO);
                     meme.setUrl("https://www.youtube.com/watch?v=PFooIMCTXG4&t=5s&ab_channel=CoisadeNerd");
-                    meme.setTitulo(MemeFaker.getTitle());
-                    meme.setDescricao(MemeFaker.getDescricao());
+                    meme.setTitulo(MemeFaker.getValidTitle());
+                    meme.setDescricao(MemeFaker.getValidDescricao());
 
                     createMeme.cadastroMemeFromMeme(meme);
 
@@ -198,7 +198,7 @@ public class CadastroMemeTest {
                     meme.setTipo(TipoMeme.VIDEO);
                     meme.setUrl("");
                     meme.setTitulo("");
-                    meme.setDescricao("um vídeo");
+                    meme.setDescricao(MemeFaker.getValidDescricao());
 
                     createMeme.cadastroMemeFromMeme(meme);
 
@@ -220,7 +220,7 @@ public class CadastroMemeTest {
                     meme.setTipo(TipoMeme.IMAGE);
                     meme.setUrl("https://quatrorodas.abril.com.br/wp-content/uploads/2022/09/Charge-67-Mustang-electric-06.webp?crop=1&resize=1212,909");
                     meme.setTitulo("");
-                    meme.setDescricao(MemeFaker.getDescricao());
+                    meme.setDescricao(MemeFaker.getValidDescricao());
 
                     createMeme.cadastroMemeFromMeme(meme);
 
@@ -239,7 +239,7 @@ public class CadastroMemeTest {
                     meme.setTipo(TipoMeme.IMAGE);
                     meme.setUrl("https://quatrorodas.abril.com.br/wp-content/uploads/2022/09/Charge-67-Mustang-electric-06.webp?crop=1&resize=1212,909");
                     meme.setTitulo(MemeFaker.getShortTitle());
-                    meme.setDescricao("um carro");
+                    meme.setDescricao(MemeFaker.getValidDescricao());
 
                     createMeme.cadastroMemeFromMeme(meme);
 
@@ -258,7 +258,7 @@ public class CadastroMemeTest {
                     meme.setTipo(TipoMeme.IMAGE);
                     meme.setUrl("https://quatrorodas.abril.com.br/wp-content/uploads/2022/09/Charge-67-Mustang-electric-06.webp?crop=1&resize=1212,909");
                     meme.setTitulo(MemeFaker.getLongTitle());
-                    meme.setDescricao("um carro");
+                    meme.setDescricao(MemeFaker.getValidDescricao());
 
                     createMeme.cadastroMemeFromMeme(meme);
 
@@ -276,7 +276,7 @@ public class CadastroMemeTest {
                     Meme meme = new Meme();
                     meme.setTipo(TipoMeme.IMAGE);
                     meme.setUrl("https://quatrorodas.abril.com.br/wp-content/uploads/2022/09/Charge-67-Mustang-electric-06.webp?crop=1&resize=1212,909");
-                    meme.setTitulo(MemeFaker.getTitle());
+                    meme.setTitulo(MemeFaker.getValidTitle());
                     meme.setDescricao(MemeFaker.getLongDescricao());
 
                     createMeme.cadastroMemeFromMeme(meme);
