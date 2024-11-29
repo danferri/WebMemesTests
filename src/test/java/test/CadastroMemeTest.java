@@ -307,6 +307,30 @@ public class CadastroMemeTest {
                 }
             }
 
+            @Test
+            @DisplayName("Should report all erros when title are empty and description exceed 50 characteres.")
+            void shouldReportMoreThanOneErrorWhenTitleIsBlankAndDrescriptionExceedFiftyCharacteres() {
+                try {
+                    SoftAssertions softly = new SoftAssertions();
+
+                    Meme meme = new Meme();
+                    meme.setTipo(TipoMeme.VIDEO);
+                    meme.setUrl(MemeFaker.getUrlVideos());
+                    meme.setTitulo("");
+                    meme.setDescricao(MemeFaker.getLongDescricao());
+
+                    createMeme.cadastroMemeFromMeme(meme);
+
+                    softly.assertThat(createMeme.checkMessageTitleError()).isEqualTo(true);
+                    softly.assertThat(createMeme.checkMessageDescriptionError()).isEqualTo(true);
+
+                    softly.assertAll();
+
+                } catch (TimeoutException ignored) {
+                    Assertions.fail("Meme wasn't register");
+                }
+            }
+
         }
 
         @Nested
