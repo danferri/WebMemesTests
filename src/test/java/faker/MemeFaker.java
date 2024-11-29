@@ -41,7 +41,7 @@ public class MemeFaker {
         return urlVideos.get(index);
     }
 
-    public static String getTitle() {
+    public static String getValidTitle() {
         return faker.lorem().characters(3,50);
     }
 
@@ -57,7 +57,7 @@ public class MemeFaker {
         return faker.lorem().characters(52);
     }
 
-    public static String getDescricao() {
+    public static String getValidDescricao() {
         return faker.lorem().characters(1,50);
     }
 

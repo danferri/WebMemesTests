@@ -24,8 +24,8 @@ public class Meme {
 
         meme.tipo = TipoMeme.VIDEO;
         meme.url = MemeFaker.getUrlVideos();
-        meme.titulo = MemeFaker.getTitle();
-        meme.descricao =MemeFaker.getDescricao();
+        meme.titulo = MemeFaker.getValidTitle();
+        meme.descricao = MemeFaker.getValidDescricao();
         return meme;
     }
 
@@ -34,8 +34,8 @@ public class Meme {
 
         meme.tipo = TipoMeme.IMAGE;
         meme.url = MemeFaker.getUrlImage();
-        meme.titulo = MemeFaker.getTitle();
-        meme.descricao =MemeFaker.getDescricao();
+        meme.titulo = MemeFaker.getValidTitle();
+        meme.descricao =MemeFaker.getValidDescricao();
         return meme;
     }
 
@@ -48,8 +48,8 @@ public class Meme {
         } else {
             meme.url = MemeFaker.getUrlVideos();
         }
-        meme.titulo = MemeFaker.getTitle();
-        meme.descricao =MemeFaker.getDescricao();
+        meme.titulo = MemeFaker.getValidTitle();
+        meme.descricao =MemeFaker.getValidDescricao();
         return meme;
     }
 
