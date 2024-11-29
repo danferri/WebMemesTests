@@ -52,7 +52,7 @@ public class CadastroMemeTest {
                 try {
                     Meme meme = new Meme();
                     meme.setTipo(TipoMeme.IMAGE);
-                    meme.setUrl("https://quatrorodas.abril.com.br/wp-content/uploads/2022/09/Charge-67-Mustang-electric-06.webp?crop=1&resize=1212,909");
+                    meme.setUrl(MemeFaker.getUrlImage());
                     meme.setTitulo(MemeFaker.getValidTitle());
                     meme.setDescricao(MemeFaker.getValidDescricao());
 
@@ -109,7 +109,7 @@ public class CadastroMemeTest {
                 try {
                     Meme meme = new Meme();
                     meme.setTipo(TipoMeme.IMAGE);
-                    meme.setUrl("https://www.youtube.com/watch?v=PFooIMCTXG4&t=5s&ab_channel=CoisadeNerd");
+                    meme.setUrl(MemeFaker.getUrlVideos());
                     meme.setTitulo(MemeFaker.getValidTitle());
                     meme.setDescricao(MemeFaker.getValidDescricao());
 
@@ -132,7 +132,7 @@ public class CadastroMemeTest {
                 try {
                     Meme meme = new Meme();
                     meme.setTipo(TipoMeme.VIDEO);
-                    meme.setUrl("https://quatrorodas.abril.com.br/wp-content/uploads/2022/09/Charge-67-Mustang-electric-06.webp?crop=1&resize=1212,909");
+                    meme.setUrl(MemeFaker.getUrlImage());
                     meme.setTitulo(MemeFaker.getValidTitle());
                     meme.setDescricao(MemeFaker.getValidDescricao());
 
@@ -170,7 +170,7 @@ public class CadastroMemeTest {
                 try {
                     Meme meme = new Meme();
                     meme.setTipo(TipoMeme.VIDEO);
-                    meme.setUrl("https://www.youtube.com/watch?v=PFooIMCTXG4&t=5s&ab_channel=CoisadeNerd");
+                    meme.setUrl(MemeFaker.getUrlVideos());
                     meme.setTitulo(MemeFaker.getValidTitle());
                     meme.setDescricao(MemeFaker.getValidDescricao());
 
@@ -218,7 +218,7 @@ public class CadastroMemeTest {
                 try {
                     Meme meme = new Meme();
                     meme.setTipo(TipoMeme.IMAGE);
-                    meme.setUrl("https://quatrorodas.abril.com.br/wp-content/uploads/2022/09/Charge-67-Mustang-electric-06.webp?crop=1&resize=1212,909");
+                    meme.setUrl(MemeFaker.getUrlImage());
                     meme.setTitulo("");
                     meme.setDescricao(MemeFaker.getValidDescricao());
 
@@ -237,7 +237,7 @@ public class CadastroMemeTest {
                 try {
                     Meme meme = new Meme();
                     meme.setTipo(TipoMeme.IMAGE);
-                    meme.setUrl("https://quatrorodas.abril.com.br/wp-content/uploads/2022/09/Charge-67-Mustang-electric-06.webp?crop=1&resize=1212,909");
+                    meme.setUrl(MemeFaker.getUrlImage());
                     meme.setTitulo(MemeFaker.getShortTitle());
                     meme.setDescricao(MemeFaker.getValidDescricao());
 
@@ -256,7 +256,7 @@ public class CadastroMemeTest {
                 try {
                     Meme meme = new Meme();
                     meme.setTipo(TipoMeme.IMAGE);
-                    meme.setUrl("https://quatrorodas.abril.com.br/wp-content/uploads/2022/09/Charge-67-Mustang-electric-06.webp?crop=1&resize=1212,909");
+                    meme.setUrl(MemeFaker.getUrlImage());
                     meme.setTitulo(MemeFaker.getLongTitle());
                     meme.setDescricao(MemeFaker.getValidDescricao());
 
@@ -275,7 +275,7 @@ public class CadastroMemeTest {
                 try {
                     Meme meme = new Meme();
                     meme.setTipo(TipoMeme.IMAGE);
-                    meme.setUrl("https://quatrorodas.abril.com.br/wp-content/uploads/2022/09/Charge-67-Mustang-electric-06.webp?crop=1&resize=1212,909");
+                    meme.setUrl(MemeFaker.getUrlImage());
                     meme.setTitulo(MemeFaker.getValidTitle());
                     meme.setDescricao(MemeFaker.getLongDescricao());
 
@@ -294,7 +294,7 @@ public class CadastroMemeTest {
                 try {
                     Meme meme = new Meme();
                     meme.setTipo(TipoMeme.IMAGE);
-                    meme.setUrl("https://quatrorodas.abril.com.br/wp-content/uploads/2022/09/Charge-67-Mustang-electric-06.webp?crop=1&resize=1212,909");
+                    meme.setUrl(MemeFaker.getUrlImage());
                     meme.setTitulo("      ");
                     meme.setDescricao(MemeFaker.getValidDescricao());
 
