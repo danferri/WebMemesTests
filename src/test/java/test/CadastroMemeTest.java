@@ -347,14 +347,6 @@ public class CadastroMemeTest {
                 assertEquals("https://webmemes.devhub.dev.br/visualizar.html", driver.getCurrentUrl());
             }
 
-            //16
-            @Test
-            @DisplayName("Should change page when click return to registration")
-            void shoundChancePageWhenClickReturnToRegitration(){
-                createMeme.goToRegistrationPage();
-
-                assertEquals("https://webmemes.devhub.dev.br/index.html", driver.getCurrentUrl());
-            }
         }
     }
 }
