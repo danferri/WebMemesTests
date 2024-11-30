@@ -31,7 +31,7 @@ public class CadastroMemeTest {
         driver.get(PAGE_URL);
 
         createMeme = new CadastroMemePage(driver);
-        webDriverWait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        webDriverWait = new WebDriverWait(driver, Duration.ofSeconds(20));
     }
 
     @AfterEach

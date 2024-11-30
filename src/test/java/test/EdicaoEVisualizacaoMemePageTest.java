@@ -1,18 +1,20 @@
 package test;
 
+import faker.MemeFaker;
 import io.github.bonigarcia.wdm.WebDriverManager;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import model.Meme;
+import model.TipoMeme;
+import org.junit.jupiter.api.*;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import page.CadastroMemePage;
 import page.EdicaoEVisualizacaoMemePage;
 
 import java.time.Duration;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class EdicaoEVisualizacaoMemePageTest {
     private WebDriver driver;
@@ -40,12 +42,24 @@ public class EdicaoEVisualizacaoMemePageTest {
     //16
     @Test
     @DisplayName("Should change page when click return to registration")
-    void shoundChancePageWhenClickReturnToRegitration(){
+    void shoundChangePageWhenClickReturnToRegitration(){
         updateAndViewMeme.goToRegistrationPage();
 
         assertEquals("https://webmemes.devhub.dev.br/index.html", driver.getCurrentUrl());
     }
 
+    //17
+    @Test
+    @DisplayName("Should change page when click proximo")
+    void shouldChangePageWhenClickProximo(){
+        String firstPage = updateAndViewMeme.identifyNumberOfPage();
+        updateAndViewMeme.goToNextPage();
+        String secondPage = updateAndViewMeme.identifyNumberOfPage();
+
+        boolean res = !firstPage.equals(secondPage);
+
+        assertTrue(res);
+    }
 
 
 }

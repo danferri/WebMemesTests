@@ -7,6 +7,8 @@ public class EdicaoEVisualizacaoMemePage {
     protected final WebDriver driver;
 
     private final By voltarPaginaDeRegistro = By.xpath("/html/body/a");
+    private final By proximoButton = By.xpath("//*[@id=\"nextPage\"]");
+    private final By numeroPagina = By.xpath("//*[@id=\"pageIndicator\"]");
 
     public EdicaoEVisualizacaoMemePage(WebDriver driver) {
         this.driver = driver;
@@ -19,5 +21,12 @@ public class EdicaoEVisualizacaoMemePage {
     }
 
     public void goToRegistrationPage(){driver.findElement(voltarPaginaDeRegistro).click();}
+
+    public void goToNextPage(){driver.findElement(proximoButton).click();}
+
+    public String identifyNumberOfPage(){
+        return driver.findElement(numeroPagina).getText();
+    }
+
 
 }
