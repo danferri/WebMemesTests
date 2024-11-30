@@ -7,6 +7,7 @@ import model.TipoMeme;
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import page.CadastroMemePage;
@@ -60,7 +61,26 @@ public class EdicaoEVisualizacaoMemePageTest {
 
         assertTrue(res);
     }
-    //conferir caso tenha 1 pagina so ele parece nao estar dando errado
+
+    //issue: o botao "proximo" mesmo sem poder clicar ele nao fica desativo
+    @Test
+    @DisplayName("Should not change when 'Proximo' button is disabled")
+    void shouldNotChangeWhenProximoButtonIsDisabled() {
+
+        // Tentando clicar no botão "Proximo" mesmo estando desativado
+        if (!updateAndViewMeme.getProximo()) {
+            // O clique não deve ter efeito se o botão estiver desativado
+            String firstPage = updateAndViewMeme.identifyNumberOfPage();
+            updateAndViewMeme.goToNextPage();
+            String secondPage = updateAndViewMeme.identifyNumberOfPage();
+
+            // Verifica se a página não mudou (pois o botão estava desativado)
+            boolean isPageSame = firstPage.equals(secondPage);
+            assertTrue(isPageSame, "A página não deveria ter mudado, pois o botão estava desativado");
+        } else {
+            fail("O botão 'Próximo' deveria estar desativado.");
+        }
+    }
 
     //18
     @Test

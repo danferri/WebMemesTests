@@ -2,6 +2,7 @@ package page;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 
 public class EdicaoEVisualizacaoMemePage {
     protected final WebDriver driver;
@@ -22,7 +23,11 @@ public class EdicaoEVisualizacaoMemePage {
     }
 
     public void goToRegistrationPage(){driver.findElement(voltarPaginaDeRegistro).click();}
-
+    public boolean getProximo(){
+        WebElement proximoButtonElement = driver.findElement(proximoButton);
+        // Verifica se o botão está ativado
+        return proximoButtonElement.isEnabled();
+    }
     public void goToNextPage(){driver.findElement(proximoButton).click();}
     public void goToPreviousPage(){driver.findElement(anteriorButton).click();}
 
