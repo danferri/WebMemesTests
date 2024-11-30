@@ -46,6 +46,7 @@ public class CadastroMemeTest {
         @Nested
         @DisplayName("Meme images tests")
         class RegisterImagesMemes {
+            //1
             @Test
             @DisplayName("shouldSuccessfullyRegisterMeme")
             void shouldSuccessfullyRegisterMemeImage() {
@@ -64,7 +65,7 @@ public class CadastroMemeTest {
                     Assertions.fail("Meme wasn't register");
                 }
             }
-
+            //2
             @Test
             @DisplayName("Should not register meme image without a valid URL")
             void shouldNotRegisterMemeImageWithoutValidUrl() {
@@ -83,7 +84,7 @@ public class CadastroMemeTest {
                     Assertions.fail("Meme wasn't register");
                 }
             }
-
+            //3
             @Test
             @DisplayName("Should not register meme image with a empty URL")
             void shouldNotRegisterMemeImageWithEmptydUrl() {
@@ -102,7 +103,7 @@ public class CadastroMemeTest {
                     Assertions.fail("Meme wasn't register");
                 }
             }
-
+            //4
             @Test
             @DisplayName("Should not register meme image with a video URL")
             void shouldNotRegisterMemeImageWithVideoUrl() {
@@ -126,6 +127,7 @@ public class CadastroMemeTest {
         @Nested
         @DisplayName("Meme videos tests")
         class RegisterVideosMemes {
+            //5
             @Test
             @DisplayName("Should not register meme video with a image URL")
             void shouldNotRegisterMemeVideoWithImageUrl() {
@@ -144,7 +146,7 @@ public class CadastroMemeTest {
                     Assertions.fail("Meme wasn't register");
                 }
             }
-
+            //6
             @Test
             @DisplayName("Should not register meme video with a empty URL")
             void shouldNotRegisterMemeVideoWithEmptydUrl() {
@@ -163,7 +165,7 @@ public class CadastroMemeTest {
                     Assertions.fail("Meme wasn't register");
                 }
             }
-
+            //7
             @Test
             @DisplayName("shouldSuccessfullyRegisterMeme")
             void shouldSuccessfullyRegisterMemeVideo() {
@@ -187,7 +189,7 @@ public class CadastroMemeTest {
         @Nested
         @DisplayName("General register meme tests")
         class GeneralRegisterMemesTests {
-
+            //8
             @Test
             @DisplayName("Should report all erros when URL and title are empty.")
             void shouldReportMorethanOneError() {
@@ -211,7 +213,7 @@ public class CadastroMemeTest {
                     Assertions.fail("Meme wasn't register");
                 }
             }
-
+            //9
             @Test
             @DisplayName("Should not register meme image with a empty title")
             void shouldNotRegisterMemeImageWithEmptyTitle() {
@@ -230,7 +232,7 @@ public class CadastroMemeTest {
                     Assertions.fail("Meme wasn't register");
                 }
             }
-
+            //10
             @Test
             @DisplayName("should not register meme with title shorter than three characters.")
             void shouldNotRegisterMemeWithTitleShorterThanThreeCharacters() {
@@ -249,7 +251,7 @@ public class CadastroMemeTest {
                     Assertions.fail("Meme wasn't register");
                 }
             }
-
+            //11
             @Test
             @DisplayName("should not register meme with title longer than fifty characters.")
             void shouldRegisterMemeWithTitleLongerThanFiftyCharacters() {
@@ -268,7 +270,7 @@ public class CadastroMemeTest {
                     Assertions.fail("Meme wasn't register");
                 }
             }
-
+            //12
             @Test
             @DisplayName("should not register meme with description longer than fifty characters.")
             void shouldNotRegisterMemeWithDescriptionLongerThanFiftyCharacters() {
@@ -287,7 +289,7 @@ public class CadastroMemeTest {
                     Assertions.fail("Meme wasn't register");
                 }
             }
-
+            //13
             @Test
             @DisplayName("should not register meme with title containing only space .")
             void shouldNotRegisterMemeWithTitleContainingOnlySpaces() {
@@ -306,7 +308,7 @@ public class CadastroMemeTest {
                     Assertions.fail("Meme wasn't register");
                 }
             }
-
+            //14
             @Test
             @DisplayName("Should report all erros when title are empty and description exceed 50 characteres.")
             void shouldReportMoreThanOneErrorWhenTitleIsBlankAndDrescriptionExceedFiftyCharacteres() {
@@ -336,13 +338,22 @@ public class CadastroMemeTest {
         @Nested
         @DisplayName("UI register meme tests")
         class UiRegisterMemeTests {
-
+            //15
             @Test
             @DisplayName("Should change page when click view registered memes")
             void shouldChangePageWhenClickViewRegisteredMemes() {
                 createMeme.goToMemesCadastradosPage();
 
                 assertEquals("https://webmemes.devhub.dev.br/visualizar.html", driver.getCurrentUrl());
+            }
+
+            //16
+            @Test
+            @DisplayName("Should change page when click return to registration")
+            void shoundChancePageWhenClickReturnToRegitration(){
+                createMeme.goToRegistrationPage();
+
+                assertEquals("https://webmemes.devhub.dev.br/index.html", driver.getCurrentUrl());
             }
         }
     }

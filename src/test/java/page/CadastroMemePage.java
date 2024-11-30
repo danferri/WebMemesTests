@@ -15,7 +15,7 @@ public class CadastroMemePage {
     private final By cadastrarMemeButton = By.xpath("//*[@id=\"memeForm\"]/button");
     private final By visualizarMemesLink = By.xpath("/html/body/div[1]/a");
     private final By messageSpam = By.xpath("//*[@id=\"message\"]");
-
+    private final By voltarPaginaDeRegistro = By.xpath("/html/body/a");
 
 
     public CadastroMemePage(WebDriver driver) {
@@ -30,6 +30,8 @@ public class CadastroMemePage {
     public void goToMemesCadastradosPage() {
         driver.findElement(visualizarMemesLink).click();
     }
+
+    public void goToRegistrationPage(){driver.findElement(voltarPaginaDeRegistro).click();}
 
     public void cadastroMemeFromMeme(Meme meme) {
         Select selectTipo = new Select(driver.findElement(tipoMemeSelect));
