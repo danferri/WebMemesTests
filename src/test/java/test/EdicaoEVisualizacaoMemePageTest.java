@@ -60,6 +60,26 @@ public class EdicaoEVisualizacaoMemePageTest {
 
         assertTrue(res);
     }
+    //conferir caso tenha 1 pagina so ele parece nao estar dando errado
+
+    //18
+    @Test
+    @DisplayName("Should report a error when change page when click anterior and first page is 1")
+    void shouldReportAErrorWhenChangePageWhenClickAnteriorAndFirstPageIs1(){
+        boolean isOnFirstPage = updateAndViewMeme.identifyNumberOfPage().equals("Página 1");
+        if(isOnFirstPage){
+            try{
+                updateAndViewMeme.goToPreviousPage();
+
+                fail("Esperava-se uma exceção ao tentar voltar da pagina 1");
+            }catch (Exception e) {
+                assertEquals("Não é possível voltar da página 1", e.getMessage());
+            }
+        }
+
+
+
+    }
 
 
 }
