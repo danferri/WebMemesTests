@@ -22,14 +22,22 @@ public class EdicaoEVisualizacaoMemePage {
 
     }
 
-    public void goToRegistrationPage(){driver.findElement(voltarPaginaDeRegistro).click();}
+    public void goToRegistrationPage(){
+        driver.findElement(voltarPaginaDeRegistro).click();
+    }
+
     public boolean getProximo(){
         WebElement proximoButtonElement = driver.findElement(proximoButton);
-        // Verifica se o botão está ativado
+
         return proximoButtonElement.isEnabled();
     }
-    public void goToNextPage(){driver.findElement(proximoButton).click();}
-    public void goToPreviousPage(){driver.findElement(anteriorButton).click();}
+
+    public void goToNextPage(){
+        driver.findElement(proximoButton).click();
+    }
+    public void goToPreviousPage(){
+        driver.findElement(anteriorButton).click();
+    }
 
     public String identifyNumberOfPage(){
         return driver.findElement(numeroPagina).getText();

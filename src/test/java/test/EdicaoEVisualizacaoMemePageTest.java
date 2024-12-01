@@ -1,18 +1,12 @@
 package test;
 
-import faker.MemeFaker;
+
 import io.github.bonigarcia.wdm.WebDriverManager;
-import model.Meme;
-import model.TipoMeme;
 import org.junit.jupiter.api.*;
-import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import page.CadastroMemePage;
 import page.EdicaoEVisualizacaoMemePage;
-
 import java.time.Duration;
 
 import static org.junit.jupiter.api.Assertions.*;
