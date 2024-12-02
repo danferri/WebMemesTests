@@ -19,8 +19,12 @@ public class EdicaoEVisualizacaoMemePage {
     private final By proximoButton = By.xpath("//*[@id=\"nextPage\"]");
     private final By anteriorButton = By.xpath("//*[@id=\"prevPage\"]");
     private final By numeroPagina = By.xpath("//*[@id=\"pageIndicator\"]");
-
     private final By tableView = By.xpath("//*[@id=\"memeTable\"]");
+    private final By title = By.xpath("/html/body/h1");
+    private final By editarMemeText = By.xpath("/html/body/div[3]/h2");
+    private final By contadorDePaginaText = By.xpath("//*[@id=\"pageIndicator\"]");
+
+
 
         public EdicaoEVisualizacaoMemePage(WebDriver driver) {
             this.driver = driver;
@@ -108,4 +112,7 @@ public class EdicaoEVisualizacaoMemePage {
     }
 
 
+    public boolean isTextSemanticCorrect() {
+            return false;
+    }
 }
