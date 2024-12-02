@@ -102,5 +102,12 @@ public class EdicaoEVisualizacaoMemePageTest {
         assertTrue(isSemanticCorrect);
     }
 
+    @Test
+    @DisplayName("Text should have the correct html semantics")
+    void TextShouldHaveTheCorrectHtmlSemantics(){
+        boolean isSemanticCorrect = updateAndViewMeme.isTextSemanticCorrect();
+        assertTrue(isSemanticCorrect);
+    }
+
 
 }
