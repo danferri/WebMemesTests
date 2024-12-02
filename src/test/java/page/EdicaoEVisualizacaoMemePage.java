@@ -3,9 +3,14 @@ package page;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class EdicaoEVisualizacaoMemePage {
     protected final WebDriver driver;
@@ -58,7 +63,49 @@ public class EdicaoEVisualizacaoMemePage {
 
 
     public boolean isTableSemanticCorrect() {
-            driver.findElement(tableView);
+        try {
+
+            WebElement table = new WebDriverWait(driver, Duration.ofSeconds(10))
+                    .until(ExpectedConditions.visibilityOfElementLocated(tableView));
+
+
+            WebElement thead = table.findElement(By.tagName("thead"));
+
+            if (thead == null) return false;
+
+
+            List<WebElement> headerRows = thead.findElements(By.tagName("tr"));
+
+            if (headerRows.isEmpty()) return false;
+
+
+            for (WebElement row : headerRows) {
+                List<WebElement> headers = row.findElements(By.tagName("th"));
+                if (headers.isEmpty()) return false;
+
+            }
+
+
+            WebElement tbody = table.findElement(By.tagName("tbody"));
+
+            if (tbody == null) return false;
+
+            List<WebElement> bodyRows = tbody.findElements(By.tagName("tr"));
+
+            if (bodyRows.isEmpty()) return true;
+
+            for (WebElement row : bodyRows) {
+                List<WebElement> cells = row.findElements(By.tagName("td"));
+                if (cells.isEmpty()) return false;
+
+            }
+
+            return true;
+        } catch (Exception e) {
+            System.err.println("Error to validate table: " + e.getMessage());
             return false;
+        }
     }
+
+
 }
