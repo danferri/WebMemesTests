@@ -95,5 +95,12 @@ public class EdicaoEVisualizacaoMemePageTest {
 
     }
 
+    @Test
+    @DisplayName("Table should have the correct html semantics")
+    void tableShouldHaveTheCorrectSemantics(){
+        boolean isSemanticCorrect = updateAndViewMeme.isTableSemanticCorrect();
+        assertTrue(isSemanticCorrect);
+    }
+
 
 }
