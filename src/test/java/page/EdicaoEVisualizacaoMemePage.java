@@ -4,6 +4,9 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class EdicaoEVisualizacaoMemePage {
     protected final WebDriver driver;
 
@@ -12,15 +15,23 @@ public class EdicaoEVisualizacaoMemePage {
     private final By anteriorButton = By.xpath("//*[@id=\"prevPage\"]");
     private final By numeroPagina = By.xpath("//*[@id=\"pageIndicator\"]");
 
-    public EdicaoEVisualizacaoMemePage(WebDriver driver) {
-        this.driver = driver;
+        public EdicaoEVisualizacaoMemePage(WebDriver driver) {
+            this.driver = driver;
 
-        if(!driver.getCurrentUrl().equals("https://webmemes.devhub.dev.br/visualizar.html")) {
-            throw new IllegalStateException("This is not the Edicao e vizualizacao de Meme page," +
-                    "current page is: " + driver.getCurrentUrl());
+
+            List<String> permittedNavigationPages = Arrays.asList(
+                    "https://webmemes.devhub.dev.br/visualizar.html",
+                    "https://webmemes.devhub.dev.br/"
+            );
+
+
+            if (!permittedNavigationPages.contains(driver.getCurrentUrl())) {
+                throw new IllegalStateException("This is not the Edicao e Visualizacao de Meme page, " +
+                        "current page is: " + driver.getCurrentUrl());
+            }
         }
 
-    }
+
 
     public void goToRegistrationPage(){
         driver.findElement(voltarPaginaDeRegistro).click();
