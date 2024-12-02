@@ -6,6 +6,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.sql.Array;
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
@@ -21,8 +22,8 @@ public class EdicaoEVisualizacaoMemePage {
     private final By numeroPagina = By.xpath("//*[@id=\"pageIndicator\"]");
     private final By tableView = By.xpath("//*[@id=\"memeTable\"]");
     private final By title = By.xpath("/html/body/h1");
-    private final By editarMemeText = By.xpath("/html/body/div[3]/h2");
-    private final By contadorDePaginaText = By.xpath("//*[@id=\"pageIndicator\"]");
+    private final By editarMeme = By.xpath("/html/body/div[3]/h2");
+    private final By contadorDePagina = By.xpath("//*[@id=\"pageIndicator\"]");
 
 
 
@@ -113,6 +114,31 @@ public class EdicaoEVisualizacaoMemePage {
 
 
     public boolean isTextSemanticCorrect() {
+        try {
+            List<String> titlesTags = Arrays.asList("h1", "h2", "h3", "h4", "h5");
+            List<String> textsTags = Arrays.asList("p", "span");
+
+            WebElement titleElement = new WebDriverWait(driver, Duration.ofSeconds(5))
+                        .until(ExpectedConditions.visibilityOfElementLocated(title));
+
+            WebElement editarMemeText = new WebDriverWait(driver, Duration.ofSeconds(5))
+                    .until(ExpectedConditions.visibilityOfElementLocated(editarMeme));
+
+            WebElement contadorDePaginaText = new WebDriverWait(driver, Duration.ofSeconds(5))
+                    .until(ExpectedConditions.visibilityOfElementLocated(contadorDePagina));
+
+
+            String actualTagNameTitle = titleElement.getTagName();
+            String actualTagNameEditMeme = editarMemeText.getTagName();
+            String actualTagNameCountPage = contadorDePaginaText.getTagName();
+
+
+            return titlesTags.contains(actualTagNameTitle) && titlesTags.contains(actualTagNameEditMeme) && textsTags.contains(actualTagNameCountPage);
+
+        } catch (Exception e) {
+            System.err.println("Erro ao validar a semântica HTML: " + e.getMessage());
             return false;
+        }
     }
+
 }
