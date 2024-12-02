@@ -15,6 +15,8 @@ public class EdicaoEVisualizacaoMemePage {
     private final By anteriorButton = By.xpath("//*[@id=\"prevPage\"]");
     private final By numeroPagina = By.xpath("//*[@id=\"pageIndicator\"]");
 
+    private final By tableView = By.xpath("//*[@id=\"memeTable\"]");
+
         public EdicaoEVisualizacaoMemePage(WebDriver driver) {
             this.driver = driver;
 
@@ -55,4 +57,8 @@ public class EdicaoEVisualizacaoMemePage {
     }
 
 
+    public boolean isTableSemanticCorrect() {
+            driver.findElement(tableView);
+            return false;
+    }
 }
