@@ -5,6 +5,7 @@ import faker.MemeFaker;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import model.Meme;
 import model.TipoMeme;
+import org.checkerframework.checker.units.qual.N;
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.By;
 import org.openqa.selenium.TimeoutException;
@@ -294,6 +295,44 @@ public class EdicaoEVisualizacaoMemePageTest {
 
 
         }
+    }
+
+    @Nested
+    @DisplayName("Comments tests")
+    class CommentsTest{
+
+        @Test
+        @DisplayName("Should open the comment modal")
+        void ShouldOpenTheCommentModal(){
+            updateAndViewMeme.goToRegistrationPage();
+            assertEquals("https://webmemes.devhub.dev.br/index.html", driver.getCurrentUrl());
+
+            WebElement selectElement = driver.findElement(By.id("type"));
+            Select select = new Select(selectElement);
+            select.selectByIndex(0);//seleciona imagem
+
+
+            driver.findElement(By.id("url")).sendKeys("https://www.hondacaiuas.com.br/wp-content/uploads/2022/08/tipos-de-carro-hatch-new-city-hatchback.jpg");
+            driver.findElement(By.id("title")).sendKeys("New Meme");
+            driver.findElement(By.id("comment")).sendKeys("This is a test meme");
+
+            driver.findElement(By.xpath("//button[text()='Cadastrar Meme']")).click();
+
+            driver.get("https://webmemes.devhub.dev.br/visualizar.html");
+
+
+            try {
+                updateAndViewMeme.commentButton();
+                WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(1));
+                wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"commentsPopup\"]/div")));
+                assertTrue(true);
+
+            } catch (TimeoutException e) {
+                fail("O modal de comentário não foi aberto dentro do tempo esperado.");
+            }
+
+        }
+
     }
 
 

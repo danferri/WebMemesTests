@@ -26,6 +26,7 @@ public class EdicaoEVisualizacaoMemePage {
     private final By editButton = By.xpath("//*[@id=\"memeList\"]/tr/td[5]/button[1]");
     private final By contadorDePagina = By.xpath("//*[@id=\"pageIndicator\"]");
     private final By removeButton = By.xpath("//*[@id=\"memeList\"]/tr/td[5]/button[2]");
+    private final By comentariosButton = By.xpath("//*[@id=\"memeList\"]/tr/td[4]/button");
 
 
         public EdicaoEVisualizacaoMemePage(WebDriver driver) {
@@ -67,11 +68,14 @@ public class EdicaoEVisualizacaoMemePage {
         return driver.findElement(numeroPagina).getText();
     }
     public void editButton(){
-            driver.findElement(editButton).click();
+        driver.findElement(editButton).click();
     }
 
     public void removeButton(){
-            driver.findElement(removeButton).click();
+        driver.findElement(removeButton).click();
+    }
+    public void commentButton(){
+        driver.findElement(comentariosButton).click();
     }
 
 
