@@ -7,6 +7,7 @@ import model.Meme;
 import model.TipoMeme;
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.By;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -15,6 +16,7 @@ import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import page.EdicaoEVisualizacaoMemePage;
 import java.time.Duration;
+import java.util.NoSuchElementException;
 
 import static javax.swing.text.html.CSS.getAttribute;
 import static org.junit.jupiter.api.Assertions.*;
@@ -194,8 +196,8 @@ public class EdicaoEVisualizacaoMemePageTest {
     @DisplayName("remove test")
     class RemoveTests{
         @Test
-        @DisplayName("Should remove with success")
-        void ShouldRemoveWithSuccess(){
+        @DisplayName("Should remove message is right")
+        void ShouldRemoveRemoveMessageIsRight(){
             updateAndViewMeme.goToRegistrationPage();
             assertEquals("https://webmemes.devhub.dev.br/index.html", driver.getCurrentUrl());
 
@@ -216,6 +218,39 @@ public class EdicaoEVisualizacaoMemePageTest {
             String deleteMessage = driver.findElement(By.id("deleteMessage")).getText();
 
             assertEquals(deleteMessage, "Meme deletado com sucesso!");
+        }
+
+        @Test
+        @DisplayName("Should remove with success")
+        void ShouldRemoveWithSuccess() throws InterruptedException {
+            updateAndViewMeme.goToRegistrationPage();
+            assertEquals("https://webmemes.devhub.dev.br/index.html", driver.getCurrentUrl());
+
+            WebElement selectElement = driver.findElement(By.id("type"));
+            Select select = new Select(selectElement);
+            select.selectByIndex(0);//seleciona imagem
+
+
+            driver.findElement(By.id("url")).sendKeys("https://www.hondacaiuas.com.br/wp-content/uploads/2022/08/tipos-de-carro-hatch-new-city-hatchback.jpg");
+            driver.findElement(By.id("title")).sendKeys("New Meme");
+            driver.findElement(By.id("comment")).sendKeys("This is a test meme");
+
+            driver.findElement(By.xpath("//button[text()='Cadastrar Meme']")).click();
+
+            driver.get("https://webmemes.devhub.dev.br/visualizar.html");
+
+            updateAndViewMeme.removeButton();
+
+            try {
+                WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+                wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath("//*[@id='memeList']/tr[1]")));
+
+                fail("O elemento ainda está presente após a remoção.");
+            } catch (TimeoutException e) {
+                assertTrue(true);
+            }
+
+
         }
     }
 
