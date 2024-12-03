@@ -333,6 +333,42 @@ public class EdicaoEVisualizacaoMemePageTest {
 
         }
 
+        @Test
+        @DisplayName("Should not stay the message of add comment with success after close and open the modal")
+        void shouldNotStayTheMessageOfAddCommentWithSuccessAfterCloseAndOpenTheModal(){
+            updateAndViewMeme.goToRegistrationPage();
+            assertEquals("https://webmemes.devhub.dev.br/index.html", driver.getCurrentUrl());
+
+            WebElement selectElement = driver.findElement(By.id("type"));
+            Select select = new Select(selectElement);
+            select.selectByIndex(0);//seleciona imagem
+
+
+            driver.findElement(By.id("url")).sendKeys("https://www.hondacaiuas.com.br/wp-content/uploads/2022/08/tipos-de-carro-hatch-new-city-hatchback.jpg");
+            driver.findElement(By.id("title")).sendKeys("New Meme");
+            driver.findElement(By.id("comment")).sendKeys("This is a test meme");
+
+            driver.findElement(By.xpath("//button[text()='Cadastrar Meme']")).click();
+
+            driver.get("https://webmemes.devhub.dev.br/visualizar.html");
+
+            try{
+                updateAndViewMeme.commentButton();
+                driver.findElement(By.id("newComment")).sendKeys("New Comment");
+                driver.findElement(By.xpath("//*[@id=\"commentForm\"]/button")).click();
+                driver.findElement(By.xpath("//*[@id=\"commentsPopup\"]/div/span")).click();
+
+                WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(1));
+                wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"commentMessage\"]")));
+
+                assertTrue(true);
+            } catch (TimeoutException e) {
+                fail("O Comentario continua la após sair de comentarios");
+            }
+
+
+
+        }
     }
 
 
