@@ -334,6 +334,38 @@ public class EdicaoEVisualizacaoMemePageTest {
         }
 
         @Test
+        @DisplayName("Should comment with success")
+        void ShouldCommentWithSuccess(){
+            updateAndViewMeme.goToRegistrationPage();
+            assertEquals("https://webmemes.devhub.dev.br/index.html", driver.getCurrentUrl());
+
+            WebElement selectElement = driver.findElement(By.id("type"));
+            Select select = new Select(selectElement);
+            select.selectByIndex(0);//seleciona imagem
+
+
+            driver.findElement(By.id("url")).sendKeys("https://www.hondacaiuas.com.br/wp-content/uploads/2022/08/tipos-de-carro-hatch-new-city-hatchback.jpg");
+            driver.findElement(By.id("title")).sendKeys("New Meme");
+            driver.findElement(By.id("comment")).sendKeys("This is a test meme");
+
+            driver.findElement(By.xpath("//button[text()='Cadastrar Meme']")).click();
+
+            driver.get("https://webmemes.devhub.dev.br/visualizar.html");
+            try {
+                updateAndViewMeme.commentButton();
+                driver.findElement(By.id("newComment")).sendKeys("New Comment");
+                driver.findElement(By.xpath("//*[@id=\"commentForm\"]/button")).click();
+                String message = driver.findElement(By.xpath("//*[@id=\"commentMessage\"]")).getText();
+
+                assertEquals(message, "Comentário adicionado com sucesso!");
+
+            } catch (NoSuchElementException e) {
+                fail("Mensagem de sucesso nao apareceu");
+            }
+
+        }
+
+        @Test
         @DisplayName("Should not stay the message of add comment with success after close and open the modal")
         void shouldNotStayTheMessageOfAddCommentWithSuccessAfterCloseAndOpenTheModal(){
             updateAndViewMeme.goToRegistrationPage();
