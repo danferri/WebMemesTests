@@ -187,6 +187,12 @@ public class EdicaoEVisualizacaoMemePageTest {
             assertEquals("https://www.hondacaiuas.com.br/wp-content/uploads/2022/08/tipos-de-carro-hatch-new-city-hatchback.jpg",imagemUrl);
         }
 
+
+    }
+
+    @Nested
+    @DisplayName("remove test")
+    class RemoveTests{
         @Test
         @DisplayName("Should remove with success")
         void ShouldRemoveWithSuccess(){
@@ -211,11 +217,6 @@ public class EdicaoEVisualizacaoMemePageTest {
 
             assertEquals(deleteMessage, "Meme deletado com sucesso!");
         }
-
-
-
-
-
     }
 
 
