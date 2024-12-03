@@ -186,6 +186,36 @@ public class EdicaoEVisualizacaoMemePageTest {
 
             assertEquals("https://www.hondacaiuas.com.br/wp-content/uploads/2022/08/tipos-de-carro-hatch-new-city-hatchback.jpg",imagemUrl);
         }
+
+        @Test
+        @DisplayName("Should remove with success")
+        void ShouldRemoveWithSuccess(){
+            updateAndViewMeme.goToRegistrationPage();
+            assertEquals("https://webmemes.devhub.dev.br/index.html", driver.getCurrentUrl());
+
+            WebElement selectElement = driver.findElement(By.id("type"));
+            Select select = new Select(selectElement);
+            select.selectByIndex(0);//seleciona imagem
+
+
+            driver.findElement(By.id("url")).sendKeys("https://www.hondacaiuas.com.br/wp-content/uploads/2022/08/tipos-de-carro-hatch-new-city-hatchback.jpg");
+            driver.findElement(By.id("title")).sendKeys("New Meme");
+            driver.findElement(By.id("comment")).sendKeys("This is a test meme");
+
+            driver.findElement(By.xpath("//button[text()='Cadastrar Meme']")).click();
+
+            driver.get("https://webmemes.devhub.dev.br/visualizar.html");
+
+            updateAndViewMeme.removeButton();
+            String deleteMessage = driver.findElement(By.id("deleteMessage")).getText();
+
+            assertEquals(deleteMessage, "Meme deletado com sucesso!");
+        }
+
+
+
+
+
     }
 
 

@@ -22,11 +22,10 @@ public class EdicaoEVisualizacaoMemePage {
     private final By numeroPagina = By.xpath("//*[@id=\"pageIndicator\"]");
     private final By tableView = By.xpath("//*[@id=\"memeTable\"]");
     private final By title = By.xpath("/html/body/h1");
-    private final By EditTitle = By.xpath("//*[@id=\"title\"]");
     private final By editarMeme = By.xpath("/html/body/div[3]/h2");
     private final By editButton = By.xpath("//*[@id=\"memeList\"]/tr/td[5]/button[1]");
     private final By contadorDePagina = By.xpath("//*[@id=\"pageIndicator\"]");
-
+    private final By removeButton = By.xpath("//*[@id=\"memeList\"]/tr/td[5]/button[2]");
 
 
         public EdicaoEVisualizacaoMemePage(WebDriver driver) {
@@ -70,9 +69,11 @@ public class EdicaoEVisualizacaoMemePage {
     public void editButton(){
             driver.findElement(editButton).click();
     }
-    public void selectEditTitle(){
-            driver.findElement(EditTitle).sendKeys();
+
+    public void removeButton(){
+            driver.findElement(removeButton).click();
     }
+
 
 
     public boolean isTableSemanticCorrect() {
