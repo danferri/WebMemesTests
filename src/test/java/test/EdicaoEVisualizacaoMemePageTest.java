@@ -7,16 +7,14 @@ import model.Meme;
 import model.TipoMeme;
 import org.checkerframework.checker.units.qual.N;
 import org.junit.jupiter.api.*;
-import org.openqa.selenium.By;
-import org.openqa.selenium.TimeoutException;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import page.EdicaoEVisualizacaoMemePage;
 import java.time.Duration;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 import static javax.swing.text.html.CSS.getAttribute;
@@ -299,11 +297,11 @@ public class EdicaoEVisualizacaoMemePageTest {
 
     @Nested
     @DisplayName("Comments tests")
-    class CommentsTest{
+    class CommentsTest {
 
         @Test
         @DisplayName("Should open the comment modal")
-        void ShouldOpenTheCommentModal(){
+        void ShouldOpenTheCommentModal() {
             updateAndViewMeme.goToRegistrationPage();
             assertEquals("https://webmemes.devhub.dev.br/index.html", driver.getCurrentUrl());
 
@@ -335,7 +333,7 @@ public class EdicaoEVisualizacaoMemePageTest {
 
         @Test
         @DisplayName("Should comment with success")
-        void ShouldCommentWithSuccess(){
+        void ShouldCommentWithSuccess() {
             updateAndViewMeme.goToRegistrationPage();
             assertEquals("https://webmemes.devhub.dev.br/index.html", driver.getCurrentUrl());
 
@@ -367,7 +365,7 @@ public class EdicaoEVisualizacaoMemePageTest {
 
         @Test
         @DisplayName("Should not stay the message of add comment with success after close and open the modal")
-        void shouldNotStayTheMessageOfAddCommentWithSuccessAfterCloseAndOpenTheModal(){
+        void shouldNotStayTheMessageOfAddCommentWithSuccessAfterCloseAndOpenTheModal() {
             updateAndViewMeme.goToRegistrationPage();
             assertEquals("https://webmemes.devhub.dev.br/index.html", driver.getCurrentUrl());
 
@@ -384,7 +382,7 @@ public class EdicaoEVisualizacaoMemePageTest {
 
             driver.get("https://webmemes.devhub.dev.br/visualizar.html");
 
-            try{
+            try {
                 updateAndViewMeme.commentButton();
                 driver.findElement(By.id("newComment")).sendKeys("New Comment");
                 driver.findElement(By.xpath("//*[@id=\"commentForm\"]/button")).click();
@@ -398,9 +396,55 @@ public class EdicaoEVisualizacaoMemePageTest {
                 fail("O Comentario continua la após sair de comentarios");
             }
 
-
-
         }
+
+
+        @Test
+        @DisplayName("Should handle large comment that exceeds modal width")
+        void shouldHandleLargeCommentExceedingModalWidth() {
+            updateAndViewMeme.goToRegistrationPage();
+            assertEquals("https://webmemes.devhub.dev.br/index.html", driver.getCurrentUrl());
+
+            WebElement selectElement = driver.findElement(By.id("type"));
+            Select select = new Select(selectElement);
+            select.selectByIndex(0); // seleciona imagem
+
+            driver.findElement(By.id("url")).sendKeys("https://www.hondacaiuas.com.br/wp-content/uploads/2022/08/tipos-de-carro-hatch-new-city-hatchback.jpg");
+            driver.findElement(By.id("title")).sendKeys("New Meme");
+            driver.findElement(By.id("comment")).sendKeys("This is a test meme");
+
+            driver.findElement(By.xpath("//button[text()='Cadastrar Meme']")).click();
+
+            driver.get("https://webmemes.devhub.dev.br/visualizar.html");
+
+            updateAndViewMeme.commentButton(); // Abre o modal
+
+            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(1));
+            wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='commentsPopup']/div")));
+
+            // Adicionando um comentário largo (em largura)
+            String largeComment = "This is a very long comment that will test how the modal handles content that exceeds the modal width. This is a test to see how the comment behaves when it is too wide for the modal container. Let's check if the modal handles overflow properly.";
+            driver.findElement(By.id("newComment")).sendKeys(largeComment);
+            driver.findElement(By.xpath("//*[@id=\"commentForm\"]/button")).click();
+
+
+            // Verificar se o modal tem overflow
+            WebElement commentModal = driver.findElement(By.xpath("//*[@id='commentsPopup']/div"));
+            String overflowX = commentModal.getCssValue("overflow-x");
+
+            // O modal não deve permitir overflow horizontal ou deve exibir uma barra de rolagem
+            assertTrue(overflowX.equals("auto") || overflowX.equals("scroll"), "O modal permite overflow horizontal.");
+
+            // Verifique se o comentário foi corretamente adicionado ao final da lista
+            List<WebElement> comments = driver.findElements(By.xpath("//div[@class='comment-item']"));
+            assertFalse(comments.isEmpty(), "O comentário grande não foi adicionado.");
+
+            // Verifique se o comentário grande não saiu pela lateral
+            String commentText = comments.get(comments.size() - 1).getText();
+            assertTrue(commentText.length() < largeComment.length(), "O comentário grande não foi truncado corretamente.");
+        }
+
+
     }
 
 
