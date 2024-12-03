@@ -16,6 +16,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import page.EdicaoEVisualizacaoMemePage;
 import java.time.Duration;
 
+import static javax.swing.text.html.CSS.getAttribute;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class EdicaoEVisualizacaoMemePageTest {
@@ -150,6 +151,40 @@ public class EdicaoEVisualizacaoMemePageTest {
             WebElement updatedTitle = driver.findElement(By.xpath("//*[@id=\"memeList\"]/tr/td[2]"));
 
             assertEquals("Edit Title", updatedTitle.getText());
+        }
+
+
+        @Test
+        @DisplayName("Should not edit a meme URL")
+        void ShouldNotEditMemeURL() {
+            updateAndViewMeme.goToRegistrationPage();
+            assertEquals("https://webmemes.devhub.dev.br/index.html", driver.getCurrentUrl());
+
+            WebElement selectElement = driver.findElement(By.id("type"));
+            Select select = new Select(selectElement);
+            select.selectByIndex(0);//seleciona imagem
+
+
+            driver.findElement(By.id("url")).sendKeys("https://www.hondacaiuas.com.br/wp-content/uploads/2022/08/tipos-de-carro-hatch-new-city-hatchback.jpg");
+            driver.findElement(By.id("title")).sendKeys("New Meme");
+            driver.findElement(By.id("comment")).sendKeys("This is a test meme");
+
+            driver.findElement(By.xpath("//button[text()='Cadastrar Meme']")).click();
+
+            driver.get("https://webmemes.devhub.dev.br/visualizar.html");
+
+            updateAndViewMeme.editButton();
+
+            WebElement urlField = driver.findElement(By.id("url"));
+            urlField.clear();
+            urlField.sendKeys("https://www.hondacaiuas.com.br/wp-content.jpg");
+
+            driver.findElement(By.id("submitMeme")).click();
+
+            WebElement updatedURL = driver.findElement(By.xpath("//*[@id=\"memeList\"]/tr/td[1]/img"));
+            String imagemUrl = updatedURL.getAttribute("src");
+
+            assertEquals("https://www.hondacaiuas.com.br/wp-content/uploads/2022/08/tipos-de-carro-hatch-new-city-hatchback.jpg",imagemUrl);
         }
     }
 
