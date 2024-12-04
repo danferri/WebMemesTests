@@ -5,8 +5,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-
-import java.sql.Array;
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
@@ -22,6 +20,8 @@ public class EdicaoEVisualizacaoMemePage {
     private final By tableView = By.xpath("//*[@id=\"memeTable\"]");
 
     private final By tableCommentsView = By.xpath("//*[@id=\"commentsTable\"]");
+
+    private final By editDescriptionInput = By.xpath("//*[@id=\"comment\"]");
 
     private final By message = By.xpath("//*[@id=\"message\"]");
     private final By editUrlInput = By.xpath("//*[@id=\"url\"]");
@@ -75,6 +75,10 @@ public class EdicaoEVisualizacaoMemePage {
 
     public By getSaveButton(){
             return saveButton;
+    }
+
+    public By getEditDescriptionInput(){
+       return editDescriptionInput;
     }
 
     public By getEditUrlInput(){
