@@ -1,11 +1,8 @@
 package test;
 
 
-import faker.MemeFaker;
+
 import io.github.bonigarcia.wdm.WebDriverManager;
-import model.Meme;
-import model.TipoMeme;
-import org.checkerframework.checker.units.qual.N;
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -16,8 +13,6 @@ import page.EdicaoEVisualizacaoMemePage;
 import java.time.Duration;
 import java.util.List;
 import java.util.NoSuchElementException;
-
-import static javax.swing.text.html.CSS.getAttribute;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class EdicaoEVisualizacaoMemePageTest {
@@ -41,6 +36,24 @@ public class EdicaoEVisualizacaoMemePageTest {
     @AfterEach
     void destroy() {
         driver.quit();
+    }
+
+    void createItemToTestUpdate(){
+        updateAndViewMeme.goToRegistrationPage();
+        assertEquals("https://webmemes.devhub.dev.br/index.html", driver.getCurrentUrl());
+
+        WebElement selectElement = driver.findElement(By.id("type"));
+        Select select = new Select(selectElement);
+        select.selectByIndex(0);//seleciona imagem
+
+
+        driver.findElement(By.id("url")).sendKeys("https://www.hondacaiuas.com.br/wp-content/uploads/2022/08/tipos-de-carro-hatch-new-city-hatchback.jpg");
+        driver.findElement(By.id("title")).sendKeys("New Meme");
+        driver.findElement(By.id("comment")).sendKeys("This is a test meme");
+
+        driver.findElement(By.xpath("//button[text()='Cadastrar Meme']")).click();
+
+        driver.get("https://webmemes.devhub.dev.br/visualizar.html");
     }
 
     //16
@@ -125,21 +138,8 @@ public class EdicaoEVisualizacaoMemePageTest {
         @Test
         @DisplayName("Meme title edited successfully")
         void MemeTitleEditedSuccessfully() {
-            updateAndViewMeme.goToRegistrationPage();
-            assertEquals("https://webmemes.devhub.dev.br/index.html", driver.getCurrentUrl());
 
-            WebElement selectElement = driver.findElement(By.id("type"));
-            Select select = new Select(selectElement);
-            select.selectByIndex(0);//seleciona imagem
-
-
-            driver.findElement(By.id("url")).sendKeys("https://www.hondacaiuas.com.br/wp-content/uploads/2022/08/tipos-de-carro-hatch-new-city-hatchback.jpg");
-            driver.findElement(By.id("title")).sendKeys("New Meme");
-            driver.findElement(By.id("comment")).sendKeys("This is a test meme");
-
-            driver.findElement(By.xpath("//button[text()='Cadastrar Meme']")).click();
-
-            driver.get("https://webmemes.devhub.dev.br/visualizar.html");
+            createItemToTestUpdate();
 
             updateAndViewMeme.editButton();
 
@@ -158,21 +158,7 @@ public class EdicaoEVisualizacaoMemePageTest {
         @Test
         @DisplayName("Should not edit a meme URL")
         void ShouldNotEditMemeURL() {
-            updateAndViewMeme.goToRegistrationPage();
-            assertEquals("https://webmemes.devhub.dev.br/index.html", driver.getCurrentUrl());
-
-            WebElement selectElement = driver.findElement(By.id("type"));
-            Select select = new Select(selectElement);
-            select.selectByIndex(0);//seleciona imagem
-
-
-            driver.findElement(By.id("url")).sendKeys("https://www.hondacaiuas.com.br/wp-content/uploads/2022/08/tipos-de-carro-hatch-new-city-hatchback.jpg");
-            driver.findElement(By.id("title")).sendKeys("New Meme");
-            driver.findElement(By.id("comment")).sendKeys("This is a test meme");
-
-            driver.findElement(By.xpath("//button[text()='Cadastrar Meme']")).click();
-
-            driver.get("https://webmemes.devhub.dev.br/visualizar.html");
+            createItemToTestUpdate();
 
             updateAndViewMeme.editButton();
 
@@ -191,21 +177,7 @@ public class EdicaoEVisualizacaoMemePageTest {
         @Test
         @DisplayName("Should not stay the message of edit with success after delete it")
         void ShouldNotStayTheMessageOfEditWithSuccessAfterDeleteIt(){
-            updateAndViewMeme.goToRegistrationPage();
-            assertEquals("https://webmemes.devhub.dev.br/index.html", driver.getCurrentUrl());
-
-            WebElement selectElement = driver.findElement(By.id("type"));
-            Select select = new Select(selectElement);
-            select.selectByIndex(0);//seleciona imagem
-
-
-            driver.findElement(By.id("url")).sendKeys("https://www.hondacaiuas.com.br/wp-content/uploads/2022/08/tipos-de-carro-hatch-new-city-hatchback.jpg");
-            driver.findElement(By.id("title")).sendKeys("New Meme");
-            driver.findElement(By.id("comment")).sendKeys("This is a test meme");
-
-            driver.findElement(By.xpath("//button[text()='Cadastrar Meme']")).click();
-
-            driver.get("https://webmemes.devhub.dev.br/visualizar.html");
+            createItemToTestUpdate();
 
             updateAndViewMeme.editButton();
 
@@ -239,21 +211,7 @@ public class EdicaoEVisualizacaoMemePageTest {
         @Test
         @DisplayName("Should remove message is right")
         void ShouldRemoveRemoveMessageIsRight(){
-            updateAndViewMeme.goToRegistrationPage();
-            assertEquals("https://webmemes.devhub.dev.br/index.html", driver.getCurrentUrl());
-
-            WebElement selectElement = driver.findElement(By.id("type"));
-            Select select = new Select(selectElement);
-            select.selectByIndex(0);//seleciona imagem
-
-
-            driver.findElement(By.id("url")).sendKeys("https://www.hondacaiuas.com.br/wp-content/uploads/2022/08/tipos-de-carro-hatch-new-city-hatchback.jpg");
-            driver.findElement(By.id("title")).sendKeys("New Meme");
-            driver.findElement(By.id("comment")).sendKeys("This is a test meme");
-
-            driver.findElement(By.xpath("//button[text()='Cadastrar Meme']")).click();
-
-            driver.get("https://webmemes.devhub.dev.br/visualizar.html");
+            createItemToTestUpdate();
 
             updateAndViewMeme.removeButton();
             String deleteMessage = driver.findElement(By.id("deleteMessage")).getText();
@@ -264,21 +222,7 @@ public class EdicaoEVisualizacaoMemePageTest {
         @Test
         @DisplayName("Should remove with success")
         void ShouldRemoveWithSuccess() throws InterruptedException {
-            updateAndViewMeme.goToRegistrationPage();
-            assertEquals("https://webmemes.devhub.dev.br/index.html", driver.getCurrentUrl());
-
-            WebElement selectElement = driver.findElement(By.id("type"));
-            Select select = new Select(selectElement);
-            select.selectByIndex(0);//seleciona imagem
-
-
-            driver.findElement(By.id("url")).sendKeys("https://www.hondacaiuas.com.br/wp-content/uploads/2022/08/tipos-de-carro-hatch-new-city-hatchback.jpg");
-            driver.findElement(By.id("title")).sendKeys("New Meme");
-            driver.findElement(By.id("comment")).sendKeys("This is a test meme");
-
-            driver.findElement(By.xpath("//button[text()='Cadastrar Meme']")).click();
-
-            driver.get("https://webmemes.devhub.dev.br/visualizar.html");
+            createItemToTestUpdate();
 
             updateAndViewMeme.removeButton();
 
@@ -302,21 +246,7 @@ public class EdicaoEVisualizacaoMemePageTest {
         @Test
         @DisplayName("Should open the comment modal")
         void ShouldOpenTheCommentModal() {
-            updateAndViewMeme.goToRegistrationPage();
-            assertEquals("https://webmemes.devhub.dev.br/index.html", driver.getCurrentUrl());
-
-            WebElement selectElement = driver.findElement(By.id("type"));
-            Select select = new Select(selectElement);
-            select.selectByIndex(0);//seleciona imagem
-
-
-            driver.findElement(By.id("url")).sendKeys("https://www.hondacaiuas.com.br/wp-content/uploads/2022/08/tipos-de-carro-hatch-new-city-hatchback.jpg");
-            driver.findElement(By.id("title")).sendKeys("New Meme");
-            driver.findElement(By.id("comment")).sendKeys("This is a test meme");
-
-            driver.findElement(By.xpath("//button[text()='Cadastrar Meme']")).click();
-
-            driver.get("https://webmemes.devhub.dev.br/visualizar.html");
+            createItemToTestUpdate();
 
 
             try {
@@ -334,21 +264,7 @@ public class EdicaoEVisualizacaoMemePageTest {
         @Test
         @DisplayName("Should comment with success")
         void ShouldCommentWithSuccess() {
-            updateAndViewMeme.goToRegistrationPage();
-            assertEquals("https://webmemes.devhub.dev.br/index.html", driver.getCurrentUrl());
-
-            WebElement selectElement = driver.findElement(By.id("type"));
-            Select select = new Select(selectElement);
-            select.selectByIndex(0);//seleciona imagem
-
-
-            driver.findElement(By.id("url")).sendKeys("https://www.hondacaiuas.com.br/wp-content/uploads/2022/08/tipos-de-carro-hatch-new-city-hatchback.jpg");
-            driver.findElement(By.id("title")).sendKeys("New Meme");
-            driver.findElement(By.id("comment")).sendKeys("This is a test meme");
-
-            driver.findElement(By.xpath("//button[text()='Cadastrar Meme']")).click();
-
-            driver.get("https://webmemes.devhub.dev.br/visualizar.html");
+            createItemToTestUpdate();
             try {
                 updateAndViewMeme.commentButton();
                 driver.findElement(By.id("newComment")).sendKeys("New Comment");
@@ -366,21 +282,7 @@ public class EdicaoEVisualizacaoMemePageTest {
         @Test
         @DisplayName("Should not stay the message of add comment with success after close and open the modal")
         void shouldNotStayTheMessageOfAddCommentWithSuccessAfterCloseAndOpenTheModal() {
-            updateAndViewMeme.goToRegistrationPage();
-            assertEquals("https://webmemes.devhub.dev.br/index.html", driver.getCurrentUrl());
-
-            WebElement selectElement = driver.findElement(By.id("type"));
-            Select select = new Select(selectElement);
-            select.selectByIndex(0);//seleciona imagem
-
-
-            driver.findElement(By.id("url")).sendKeys("https://www.hondacaiuas.com.br/wp-content/uploads/2022/08/tipos-de-carro-hatch-new-city-hatchback.jpg");
-            driver.findElement(By.id("title")).sendKeys("New Meme");
-            driver.findElement(By.id("comment")).sendKeys("This is a test meme");
-
-            driver.findElement(By.xpath("//button[text()='Cadastrar Meme']")).click();
-
-            driver.get("https://webmemes.devhub.dev.br/visualizar.html");
+            createItemToTestUpdate();
 
             try {
                 updateAndViewMeme.commentButton();
@@ -402,20 +304,7 @@ public class EdicaoEVisualizacaoMemePageTest {
         @Test
         @DisplayName("Should handle large comment that exceeds modal width")
         void shouldHandleLargeCommentExceedingModalWidth() {
-            updateAndViewMeme.goToRegistrationPage();
-            assertEquals("https://webmemes.devhub.dev.br/index.html", driver.getCurrentUrl());
-
-            WebElement selectElement = driver.findElement(By.id("type"));
-            Select select = new Select(selectElement);
-            select.selectByIndex(0); // seleciona imagem
-
-            driver.findElement(By.id("url")).sendKeys("https://www.hondacaiuas.com.br/wp-content/uploads/2022/08/tipos-de-carro-hatch-new-city-hatchback.jpg");
-            driver.findElement(By.id("title")).sendKeys("New Meme");
-            driver.findElement(By.id("comment")).sendKeys("This is a test meme");
-
-            driver.findElement(By.xpath("//button[text()='Cadastrar Meme']")).click();
-
-            driver.get("https://webmemes.devhub.dev.br/visualizar.html");
+            createItemToTestUpdate();
 
             updateAndViewMeme.commentButton(); // Abre o modal
 
