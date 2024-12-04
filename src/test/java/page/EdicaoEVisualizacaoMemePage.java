@@ -4,143 +4,54 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
+
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 
 public class EdicaoEVisualizacaoMemePage {
     protected final WebDriver driver;
-
-    private final By voltarPaginaDeRegistro = By.xpath("/html/body/a");
+    private final By voltarPaginaDeRegistroLink = By.xpath("/html/body/a");
     private final By proximoButton = By.xpath("//*[@id=\"nextPage\"]");
     private final By anteriorButton = By.xpath("//*[@id=\"prevPage\"]");
-    private final By numeroPagina = By.xpath("//*[@id=\"pageIndicator\"]");
+    private final By numeroPaginaText = By.xpath("//*[@id=\"pageIndicator\"]");
     private final By tableView = By.xpath("//*[@id=\"memeTable\"]");
-
     private final By tableCommentsView = By.xpath("//*[@id=\"commentsTable\"]");
-
     private final By editDescriptionInput = By.xpath("//*[@id=\"comment\"]");
-
-    private final By message = By.xpath("//*[@id=\"message\"]");
-
-    private final By messageComment = By.xpath("//*[@id=\"commentMessage\"]");
+    private final By messageOfErrorOrSuccessText = By.xpath("//*[@id=\"message\"]");
+    private final By messageOfErrorOrSuccessInCommentModal = By.xpath("//*[@id=\"commentMessage\"]");
     private final By editUrlInput = By.xpath("//*[@id=\"url\"]");
     private final By saveButton = By.id("submitMeme");
     private final By editTitleInput = By.xpath("//*[@id=\"title\"]");
-
-    private final By title = By.xpath("/html/body/h1");
+    private final By titleText = By.xpath("/html/body/h1");
     private final By editarMeme = By.xpath("/html/body/div[3]/h2");
     private final By editButton = By.xpath("//*[@id=\"memeList\"]/tr/td[5]/button[1]");
     private final By contadorDePagina = By.xpath("//*[@id=\"pageIndicator\"]");
     private final By removeButton = By.xpath("//*[@id=\"memeList\"]/tr/td[5]/button[2]");
     private final By comentariosButton = By.xpath("//*[@id=\"memeList\"]/tr/td[4]/button");
     private final By commentTitle = By.xpath("//*[@id=\"commentsPopup\"]/div/h2");
-    private final By editComment = By.xpath("//*[@id=\"commentsList\"]/tr/td[2]/button[1]");
-
-
+    private final By editCommentButton = By.xpath("//*[@id=\"commentsList\"]/tr/td[2]/button[1]");
     private final By select = By.id("type");
 
+    public EdicaoEVisualizacaoMemePage(WebDriver driver) {
+        this.driver = driver;
 
 
-
-        public EdicaoEVisualizacaoMemePage(WebDriver driver) {
-            this.driver = driver;
-
-
-            List<String> permittedNavigationPages = Arrays.asList(
-                    "https://webmemes.devhub.dev.br/visualizar.html",
-                    "https://webmemes.devhub.dev.br/"
-            );
+        List<String> permittedNavigationPages = Arrays.asList(
+                "https://webmemes.devhub.dev.br/visualizar.html",
+                "https://webmemes.devhub.dev.br/"
+        );
 
 
-            if (!permittedNavigationPages.contains(driver.getCurrentUrl())) {
-                throw new IllegalStateException("This is not the Edicao e Visualizacao de Meme page, " +
-                        "current page is: " + driver.getCurrentUrl());
-            }
+        if (!permittedNavigationPages.contains(driver.getCurrentUrl())) {
+            throw new IllegalStateException("This is not the Edicao e Visualizacao de Meme page, " +
+                    "current page is: " + driver.getCurrentUrl());
         }
-
-
-
-    public void goToRegistrationPage(){
-        driver.findElement(voltarPaginaDeRegistro).click();
-    }
-
-    public boolean getProximo(){
-        WebElement proximoButtonElement = driver.findElement(proximoButton);
-
-        return proximoButtonElement.isEnabled();
-    }
-
-    public By getSelect(){
-            return select;
-    }
-
-    public By getSaveButton(){
-            return saveButton;
-    }
-
-    public By getEditDescriptionInput(){
-       return editDescriptionInput;
-    }
-
-    public By getEditUrlInput(){
-        return editUrlInput;
-    }
-
-    public By getEditTitleInput(){
-        return editTitleInput;
-    }
-
-    public void goToNextPage(){
-        driver.findElement(proximoButton).click();
-    }
-
-    public void goToEditComment(){
-        driver.findElement(editComment).click();
-    }
-    public void goToPreviousPage(){
-        driver.findElement(anteriorButton).click();
-    }
-
-    public String identifyNumberOfPage(){
-        return driver.findElement(numeroPagina).getText();
-    }
-    public void editButton(){
-        driver.findElement(editButton).click();
-    }
-
-    public void clickInSave(){
-        driver.findElement(saveButton).click();
-    }
-
-    public void removeButton(){
-        driver.findElement(removeButton).click();
-    }
-    public void commentButton(){
-        driver.findElement(comentariosButton).click();
-    }
-
-    public boolean tableViewHasCorrectSemanticTable(){
-        return isTableSemanticCorrect(tableView);
-    }
-
-    public boolean tableViewHasCorrectsemanticCommentsTable(){
-            return isTableSemanticCorrect(tableCommentsView);
-    }
-
-
-    public int getQuantityOfRows(){
-
-        WebElement table = new WebDriverWait(driver, Duration.ofSeconds(10))
-                .until(ExpectedConditions.visibilityOfElementLocated(tableView));
-
-        WebElement tbody = table.findElement(By.tagName("tbody"));
-
-        if (tbody == null) return 0;
-
-        return tbody.findElements(By.tagName("tr")).size();
     }
 
     public void clearFields(List<By> locators) {
@@ -156,6 +67,19 @@ public class EdicaoEVisualizacaoMemePage {
     }
 
 
+    public int getQuantityOfRows() {
+
+        WebElement table = new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(ExpectedConditions.visibilityOfElementLocated(tableView));
+
+        WebElement tbody = table.findElement(By.tagName("tbody"));
+
+        if (tbody == null) return 0;
+
+        return tbody.findElements(By.tagName("tr")).size();
+    }
+
+
     public boolean isErrorMessageDisplayed() {
         try {
             String[] errorMessages = {
@@ -165,10 +89,10 @@ public class EdicaoEVisualizacaoMemePage {
             };
 
 
-            if (driver.findElements(message).isEmpty()) return false;
+            if (driver.findElements(messageOfErrorOrSuccessText).isEmpty()) return false;
 
 
-            String actualMessage = driver.findElement(message).getText();
+            String actualMessage = driver.findElement(messageOfErrorOrSuccessText).getText();
 
 
             return Arrays.asList(errorMessages).contains(actualMessage);
@@ -186,10 +110,10 @@ public class EdicaoEVisualizacaoMemePage {
             };
 
 
-            if (driver.findElements(messageComment).isEmpty()) return false;
+            if (driver.findElements(messageOfErrorOrSuccessInCommentModal).isEmpty()) return false;
 
 
-            String actualMessage = driver.findElement(messageComment).getText();
+            String actualMessage = driver.findElement(messageOfErrorOrSuccessInCommentModal).getText();
 
 
             return Arrays.asList(errorMessages).contains(actualMessage);
@@ -198,7 +122,6 @@ public class EdicaoEVisualizacaoMemePage {
             return false;
         }
     }
-
 
 
     public boolean isTableSemanticCorrect(By tableBy) {
@@ -246,22 +169,21 @@ public class EdicaoEVisualizacaoMemePage {
         }
     }
 
-    public boolean isCommentTextSemantiCorrect(){
-            try{
-                List<String> titlesTags = Arrays.asList("h1", "h2", "h3", "h4", "h5");
+    public boolean isCommentTextSemantiCorrect() {
+        try {
+            List<String> titlesTags = Arrays.asList("h1", "h2", "h3", "h4", "h5");
 
-                WebElement titleElement = new WebDriverWait(driver, Duration.ofSeconds(5))
-                        .until(ExpectedConditions.visibilityOfElementLocated(commentTitle));
+            WebElement titleElement = new WebDriverWait(driver, Duration.ofSeconds(5))
+                    .until(ExpectedConditions.visibilityOfElementLocated(commentTitle));
 
-                String actualTagNameTitle = titleElement.getTagName();
-                return titlesTags.contains(actualTagNameTitle);
+            String actualTagNameTitle = titleElement.getTagName();
+            return titlesTags.contains(actualTagNameTitle);
 
-            } catch (Exception e) {
-                System.err.println("Erro ao validar a semântica HTML: " + e.getMessage());
-                return false;
-            }
+        } catch (Exception e) {
+            System.err.println("Erro ao validar a semântica HTML: " + e.getMessage());
+            return false;
+        }
     }
-
 
 
     public boolean isTextSemanticCorrect() {
@@ -270,7 +192,7 @@ public class EdicaoEVisualizacaoMemePage {
             List<String> textsTags = Arrays.asList("p", "span");
 
             WebElement titleElement = new WebDriverWait(driver, Duration.ofSeconds(5))
-                        .until(ExpectedConditions.visibilityOfElementLocated(title));
+                    .until(ExpectedConditions.visibilityOfElementLocated(titleText));
 
             WebElement editarMemeText = new WebDriverWait(driver, Duration.ofSeconds(5))
                     .until(ExpectedConditions.visibilityOfElementLocated(editarMeme));
@@ -290,6 +212,95 @@ public class EdicaoEVisualizacaoMemePage {
             System.err.println("Erro ao validar a semântica HTML: " + e.getMessage());
             return false;
         }
+    }
+
+    public void createItemToTestUpdate() {
+        goToRegistrationPage();
+        assertEquals("https://webmemes.devhub.dev.br/index.html", driver.getCurrentUrl());
+
+        WebElement selectElement = driver.findElement(By.id("type"));
+        Select select = new Select(selectElement);
+        select.selectByIndex(0);
+
+
+        driver.findElement(By.id("url")).sendKeys("https://www.hondacaiuas.com.br/wp-content/uploads/2022/08/tipos-de-carro-hatch-new-city-hatchback.jpg");
+        driver.findElement(By.id("title")).sendKeys("New Meme");
+        driver.findElement(By.id("comment")).sendKeys("This is a test meme");
+
+        driver.findElement(By.xpath("//button[text()='Cadastrar Meme']")).click();
+
+        driver.get("https://webmemes.devhub.dev.br/visualizar.html");
+    }
+
+
+    public void goToRegistrationPage() {
+        driver.findElement(voltarPaginaDeRegistroLink).click();
+    }
+
+    public boolean getProximo() {
+        WebElement proximoButtonElement = driver.findElement(proximoButton);
+
+        return proximoButtonElement.isEnabled();
+    }
+
+    public By getSelect() {
+        return select;
+    }
+
+    public By getSaveButton() {
+        return saveButton;
+    }
+
+    public By getEditDescriptionInput() {
+        return editDescriptionInput;
+    }
+
+    public By getEditUrlInput() {
+        return editUrlInput;
+    }
+
+    public By getEditTitleInput() {
+        return editTitleInput;
+    }
+
+    public void goToNextPage() {
+        driver.findElement(proximoButton).click();
+    }
+
+    public void goToEditComment() {
+        driver.findElement(editCommentButton).click();
+    }
+
+    public void goToPreviousPage() {
+        driver.findElement(anteriorButton).click();
+    }
+
+    public String identifyNumberOfPage() {
+        return driver.findElement(numeroPaginaText).getText();
+    }
+
+    public void editButton() {
+        driver.findElement(editButton).click();
+    }
+
+    public void clickInSave() {
+        driver.findElement(saveButton).click();
+    }
+
+    public void removeButton() {
+        driver.findElement(removeButton).click();
+    }
+
+    public void commentButton() {
+        driver.findElement(comentariosButton).click();
+    }
+
+    public boolean tableViewHasCorrectSemanticTable() {
+        return isTableSemanticCorrect(tableView);
+    }
+
+    public boolean tableViewHasCorrectsemanticCommentsTable() {
+        return isTableSemanticCorrect(tableCommentsView);
     }
 
 }

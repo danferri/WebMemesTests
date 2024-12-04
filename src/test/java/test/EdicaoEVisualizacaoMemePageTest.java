@@ -3,21 +3,27 @@ package test;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.*;
-import org.openqa.selenium.*;
+import org.openqa.selenium.By;
+import org.openqa.selenium.TimeoutException;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import page.EdicaoEVisualizacaoMemePage;
+
 import java.time.Duration;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class EdicaoEVisualizacaoMemePageTest {
     private WebDriver driver;
-    private WebDriverWait webDriverWait;
+    static WebDriverWait webDriverWait;
 
     private final String PAGE_URL = "https://webmemes.devhub.dev.br/visualizar.html";
     private EdicaoEVisualizacaoMemePage updateAndViewMeme;
@@ -38,91 +44,70 @@ public class EdicaoEVisualizacaoMemePageTest {
         driver.quit();
     }
 
-    void createItemToTestUpdate(){
-        updateAndViewMeme.goToRegistrationPage();
-        assertEquals("https://webmemes.devhub.dev.br/index.html", driver.getCurrentUrl());
+    @Nested
+    @DisplayName("Navigation and Pagination Tests")
+    class NavigationAndPaginationTests {
+        @Test
+        @DisplayName("Should change page when click return to registration")
+        void shoundChangePageWhenClickReturnToRegitration() {
+            updateAndViewMeme.goToRegistrationPage();
 
-        WebElement selectElement = driver.findElement(By.id("type"));
-        Select select = new Select(selectElement);
-        select.selectByIndex(0);//seleciona imagem
+            assertEquals("https://webmemes.devhub.dev.br/index.html", driver.getCurrentUrl());
+        }
 
-
-        driver.findElement(By.id("url")).sendKeys("https://www.hondacaiuas.com.br/wp-content/uploads/2022/08/tipos-de-carro-hatch-new-city-hatchback.jpg");
-        driver.findElement(By.id("title")).sendKeys("New Meme");
-        driver.findElement(By.id("comment")).sendKeys("This is a test meme");
-
-        driver.findElement(By.xpath("//button[text()='Cadastrar Meme']")).click();
-
-        driver.get("https://webmemes.devhub.dev.br/visualizar.html");
-    }
-
-    //16
-    @Test
-    @DisplayName("Should change page when click return to registration")
-    void shoundChangePageWhenClickReturnToRegitration(){
-        updateAndViewMeme.goToRegistrationPage();
-
-        assertEquals("https://webmemes.devhub.dev.br/index.html", driver.getCurrentUrl());
-    }
-
-    //17
-    @Test
-    @DisplayName("Should change page when click proximo")
-    void shouldChangePageWhenClickProximo(){
-        String firstPage = updateAndViewMeme.identifyNumberOfPage();
-        updateAndViewMeme.goToNextPage();
-        String secondPage = updateAndViewMeme.identifyNumberOfPage();
-
-        boolean res = !firstPage.equals(secondPage);
-
-        assertTrue(res);
-    }
+        @Test
+        @DisplayName("Should not change when 'Proximo' button is disabled")
+        void shouldNotChangeWhenProximoButtonIsDisabled() {
 
 
-    @Test
-    @DisplayName("Should not change when 'Proximo' button is disabled")
-    void shouldNotChangeWhenProximoButtonIsDisabled() {
+            if (!updateAndViewMeme.getProximo()) {
 
+                String firstPage = updateAndViewMeme.identifyNumberOfPage();
+                updateAndViewMeme.goToNextPage();
+                String secondPage = updateAndViewMeme.identifyNumberOfPage();
 
-        if (!updateAndViewMeme.getProximo()) {
+                boolean isPageSame = firstPage.equals(secondPage);
+                assertTrue(isPageSame, "A página não deveria ter mudado, pois o botão estava desativado");
+            } else {
+                fail("O botão 'Próximo' deveria estar desativado.");
+            }
+        }
 
+        @Test
+        @DisplayName("Should change page when click proximo")
+        void shouldChangePageWhenClickProximo() {
             String firstPage = updateAndViewMeme.identifyNumberOfPage();
             updateAndViewMeme.goToNextPage();
             String secondPage = updateAndViewMeme.identifyNumberOfPage();
 
-            boolean isPageSame = firstPage.equals(secondPage);
-            assertTrue(isPageSame, "A página não deveria ter mudado, pois o botão estava desativado");
-        } else {
-            fail("O botão 'Próximo' deveria estar desativado.");
+            boolean res = !firstPage.equals(secondPage);
+
+            assertTrue(res);
         }
-    }
 
-    //18
-    @Test
-    @DisplayName("Should report a error when change page when click anterior and first page is 1")
-    void shouldReportAErrorWhenChangePageWhenClickAnteriorAndFirstPageIs1(){
-        boolean isOnFirstPage = updateAndViewMeme.identifyNumberOfPage().equals("Página 1");
-        if(isOnFirstPage){
-            try{
-                updateAndViewMeme.goToPreviousPage();
+        @Test
+        @DisplayName("Should report a error when change page when click anterior and first page is 1")
+        void shouldReportAErrorWhenChangePageWhenClickAnteriorAndFirstPageIs1() {
+            boolean isOnFirstPage = updateAndViewMeme.identifyNumberOfPage().equals("Página 1");
+            if (isOnFirstPage) {
+                try {
+                    updateAndViewMeme.goToPreviousPage();
 
-                fail("Esperava-se uma exceção ao tentar voltar da pagina 1");
-            }catch (Exception e) {
-                assertEquals("Não é possível voltar da página 1", e.getMessage());
+                    fail("Esperava-se uma exceção ao tentar voltar da pagina 1");
+                } catch (Exception e) {
+                    assertEquals("Não é possível voltar da página 1", e.getMessage());
+                }
             }
         }
-
-
-
     }
 
     @Nested
-    @DisplayName("Validation test for checks performed during registration to ensure they are valided during editing")
-    class ValidateRoles{
+    @DisplayName("Edit Field Validation Tests")
+    class ValidateRoles {
         @Test
         @DisplayName("Should error message when try edit mandatory fields to empty")
         void shouldErrorMessageWhenTryEditMandatoryFieldsToEmpty() {
-            createItemToTestUpdate();
+            updateAndViewMeme.createItemToTestUpdate();
 
             updateAndViewMeme.editButton();
 
@@ -141,8 +126,8 @@ public class EdicaoEVisualizacaoMemePageTest {
 
         @Test
         @DisplayName("Should not edit message when edit mandatory fields to empty")
-        void shouldNotEditMessageWhenEditMandatoryFieldsToEmpty(){
-            createItemToTestUpdate();
+        void shouldNotEditMessageWhenEditMandatoryFieldsToEmpty() {
+            updateAndViewMeme.createItemToTestUpdate();
 
             updateAndViewMeme.editButton();
 
@@ -159,10 +144,10 @@ public class EdicaoEVisualizacaoMemePageTest {
 
             updateAndViewMeme.clickInSave();
 
-            String urlThatWasRecorded  =
+            String urlThatWasRecorded =
                     driver.findElement(By.xpath("//*[@id=\"memeList\"]/tr/td[1]/img")).getAttribute("src");
 
-            String titleThatWasRecorded  =
+            String titleThatWasRecorded =
                     driver.findElement(By.xpath("//*[@id=\"memeList\"]/tr/td[2]")).getText();
 
             assertEquals(urlThatWasRecorded, urlValueBeforeTryingToEdit);
@@ -175,7 +160,7 @@ public class EdicaoEVisualizacaoMemePageTest {
         @DisplayName("Should not edit select and url for types that are incompatible with each other")
         void shouldNotEditSelectAndUrlForTypesIncompatible() {
 
-            createItemToTestUpdate();
+            updateAndViewMeme.createItemToTestUpdate();
 
             updateAndViewMeme.editButton();
 
@@ -187,7 +172,7 @@ public class EdicaoEVisualizacaoMemePageTest {
 
 
             updateAndViewMeme.clearFields(
-                    Arrays.asList(
+                    Collections.singletonList(
                             updateAndViewMeme.getEditUrlInput()
                     )
             );
@@ -219,12 +204,11 @@ public class EdicaoEVisualizacaoMemePageTest {
         }
 
 
-
         @Test
         @DisplayName("Should display error message when try edit select and url for types that are incompatible with each other")
         void shouldDisplayErrorMessageWhenTryEditSelectAndUrlForTypesIncompatible() {
 
-            createItemToTestUpdate();
+            updateAndViewMeme.createItemToTestUpdate();
 
             updateAndViewMeme.editButton();
 
@@ -232,7 +216,7 @@ public class EdicaoEVisualizacaoMemePageTest {
 
 
             updateAndViewMeme.clearFields(
-                    Arrays.asList(
+                    Collections.singletonList(
                             updateAndViewMeme.getEditUrlInput()
                     )
             );
@@ -255,7 +239,7 @@ public class EdicaoEVisualizacaoMemePageTest {
         @DisplayName("Should not edit title when text shorter than 3 characters")
         void shouldNotEditTitleWhenTextShorterThan3Character() {
 
-            createItemToTestUpdate();
+            updateAndViewMeme.createItemToTestUpdate();
 
             updateAndViewMeme.editButton();
 
@@ -266,11 +250,10 @@ public class EdicaoEVisualizacaoMemePageTest {
 
 
             updateAndViewMeme.clearFields(
-                    Arrays.asList(
+                    Collections.singletonList(
                             updateAndViewMeme.getEditTitleInput()
                     )
             );
-
 
 
             driver.findElement(updateAndViewMeme.getEditTitleInput()).sendKeys("oi");
@@ -292,104 +275,51 @@ public class EdicaoEVisualizacaoMemePageTest {
         @Test
         @DisplayName("Should not edit title when text bigger than 50 characters")
         void shouldNotEditTitleWhenTextBiggerThan50Character() {
-
-            createItemToTestUpdate();
-
+            updateAndViewMeme.createItemToTestUpdate();
             updateAndViewMeme.editButton();
 
             SoftAssertions softly = new SoftAssertions();
-
-
-            String titleValueBeforeTryingToEdit = driver.findElement(updateAndViewMeme.getEditTitleInput()).getAttribute("value");
-
+            String titleValueBeforeTryingToEdit =
+                    driver.findElement(updateAndViewMeme.getEditTitleInput()).getAttribute("value");
 
             updateAndViewMeme.clearFields(
-                    Arrays.asList(
+                    Collections.singletonList(
                             updateAndViewMeme.getEditTitleInput()
                     )
             );
 
-
-
             driver.findElement(updateAndViewMeme.getEditTitleInput()).sendKeys("Lorem ipsum dolor sit amet," +
                     " consectetur adipiscing elit. Nullam scelerisque orci vitae sapien interdum, id dignissim lectus porttitor.");
-
-
             updateAndViewMeme.clickInSave();
 
-
             String titleThatWasRecorded = driver.findElement(By.xpath("//*[@id=\"memeList\"]/tr/td[2]")).getText();
-
             softly.assertThat(titleThatWasRecorded)
                     .as("O titulo não deveria ter sido atualizado")
                     .isEqualTo(titleValueBeforeTryingToEdit);
-
-
             softly.assertAll();
         }
 
         @Test
         @DisplayName("Should display error message when try edit title to text shorter than 3 characters")
         void shouldDisplayErrorMessageWhenTryEditTitleToTextShorterThan3Characters() {
-
-            createItemToTestUpdate();
-
+            updateAndViewMeme.createItemToTestUpdate();
             updateAndViewMeme.editButton();
-
-
-
-
             updateAndViewMeme.clearFields(
-                    Arrays.asList(
+                    Collections.singletonList(
                             updateAndViewMeme.getEditTitleInput()
                     )
             );
-
-
 
             driver.findElement(updateAndViewMeme.getEditTitleInput()).sendKeys("oi");
-
-
             updateAndViewMeme.clickInSave();
-
-
             assertTrue(updateAndViewMeme.isErrorMessageDisplayed());
-
-        }
-
-        @Test
-        @DisplayName("Should display error message when try edit title to text bigger than 50 characters")
-        void shouldDisplayErrorMessageWhenTryEditTitleToTextBiggerThan50Characters() {
-
-            createItemToTestUpdate();
-
-            updateAndViewMeme.editButton();
-
-
-            updateAndViewMeme.clearFields(
-                    Arrays.asList(
-                            updateAndViewMeme.getEditTitleInput()
-                    )
-            );
-
-
-
-            driver.findElement(updateAndViewMeme.getEditTitleInput()).sendKeys("Lorem ipsum dolor sit amet, " +
-                    "consectetur adipiscing elit. Nullam scelerisque orci vitae sapien interdum, id dignissim lectus porttitor.");
-
-
-            updateAndViewMeme.clickInSave();
-
-
-            assertTrue(updateAndViewMeme.isErrorMessageDisplayed());
-
         }
 
         @Test
         @DisplayName("Should be possible to edit description to empty")
         void shouldBePossibleToEditDescriptionToEmpty() {
 
-            createItemToTestUpdate();
+            updateAndViewMeme.createItemToTestUpdate();
 
             updateAndViewMeme.editButton();
 
@@ -400,7 +330,7 @@ public class EdicaoEVisualizacaoMemePageTest {
             String displayTextInTableWhenValueIsEmpty = "-";
 
             updateAndViewMeme.clearFields(
-                    Arrays.asList(
+                    Collections.singletonList(
                             updateAndViewMeme.getEditDescriptionInput()
                     )
             );
@@ -419,9 +349,42 @@ public class EdicaoEVisualizacaoMemePageTest {
         }
 
         @Test
+        @DisplayName("Should display error message when try edit title to text bigger than 50 characters")
+        void shouldDisplayErrorMessageWhenTryEditTitleToTextBiggerThan50Characters() {
+
+            updateAndViewMeme.createItemToTestUpdate();
+
+            updateAndViewMeme.editButton();
+
+
+            updateAndViewMeme.clearFields(
+                    Collections.singletonList(
+                            updateAndViewMeme.getEditTitleInput()
+                    )
+            );
+
+
+            driver.findElement(updateAndViewMeme.getEditTitleInput()).sendKeys("Lorem ipsum dolor sit amet, " +
+                    "consectetur adipiscing elit. Nullam scelerisque orci vitae sapien interdum, id dignissim lectus porttitor.");
+
+
+            updateAndViewMeme.clickInSave();
+
+
+            assertTrue(updateAndViewMeme.isErrorMessageDisplayed());
+
+        }
+    }
+
+    @Nested
+    @DisplayName("Comment Validation Tests")
+    class CommentValidationTests {
+
+
+        @Test
         @DisplayName("Should not edit comment to empty")
-        void shouldNotEditCommentToEmpty(){
-            createItemToTestUpdate();
+        void shouldNotEditCommentToEmpty() {
+            updateAndViewMeme.createItemToTestUpdate();
 
             String lastValue = "last value";
 
@@ -429,21 +392,18 @@ public class EdicaoEVisualizacaoMemePageTest {
             SoftAssertions softly = new SoftAssertions();
 
 
+            updateAndViewMeme.commentButton();
 
-                updateAndViewMeme.commentButton();
-
-                driver.findElement(By.id("newComment")).sendKeys(lastValue);
-                driver.findElement(By.xpath("//*[@id=\"commentForm\"]/button")).click();
+            driver.findElement(By.id("newComment")).sendKeys(lastValue);
+            driver.findElement(By.xpath("//*[@id=\"commentForm\"]/button")).click();
 
 
-                updateAndViewMeme.goToEditComment();
+            updateAndViewMeme.goToEditComment();
 
-                updateAndViewMeme.clearFields(Arrays.asList(By.id("newComment")));
+            updateAndViewMeme.clearFields(List.of(By.id("newComment")));
             driver.findElement(By.xpath("//*[@id=\"commentForm\"]/button")).click();
 
             String commentThatWasRecorded = driver.findElement(By.xpath("//*[@id=\"commentsList\"]/tr/td[1]")).getText();
-
-
 
 
             softly.assertThat(lastValue)
@@ -453,16 +413,12 @@ public class EdicaoEVisualizacaoMemePageTest {
             softly.assertAll();
 
 
-
-
-
-
         }
 
         @Test
         @DisplayName("should display an error message when the comment cannot be changed")
-        void shouldDisplayAnErrorMessageWhenTheCommentCannotBeChanged(){
-            createItemToTestUpdate();
+        void shouldDisplayAnErrorMessageWhenTheCommentCannotBeChanged() {
+            updateAndViewMeme.createItemToTestUpdate();
 
             String lastValue = "last value";
 
@@ -475,38 +431,25 @@ public class EdicaoEVisualizacaoMemePageTest {
 
             updateAndViewMeme.goToEditComment();
 
-            updateAndViewMeme.clearFields(Arrays.asList(By.id("newComment")));
+            updateAndViewMeme.clearFields(List.of(By.id("newComment")));
             driver.findElement(By.xpath("//*[@id=\"commentForm\"]/button")).click();
-
-
-
 
             assertTrue(updateAndViewMeme.isErrorMessageInCommentsDisplayed());
 
 
-
         }
-
-
-
-
 
     }
 
-
-
-
-
-
     @Nested
-    @DisplayName("Edit meme test")
+    @DisplayName("Edit functionality tests")
     class EditMemeTest {
 
         @Test
         @DisplayName("Meme title edited successfully")
         void MemeTitleEditedSuccessfully() {
 
-            createItemToTestUpdate();
+            updateAndViewMeme.createItemToTestUpdate();
 
             updateAndViewMeme.editButton();
 
@@ -525,7 +468,7 @@ public class EdicaoEVisualizacaoMemePageTest {
         @Test
         @DisplayName("Should not edit a meme URL")
         void ShouldNotEditMemeURL() {
-            createItemToTestUpdate();
+            updateAndViewMeme.createItemToTestUpdate();
 
             updateAndViewMeme.editButton();
 
@@ -538,13 +481,13 @@ public class EdicaoEVisualizacaoMemePageTest {
             WebElement updatedURL = driver.findElement(By.xpath("//*[@id=\"memeList\"]/tr/td[1]/img"));
             String imagemUrl = updatedURL.getAttribute("src");
 
-            assertEquals("https://www.hondacaiuas.com.br/wp-content/uploads/2022/08/tipos-de-carro-hatch-new-city-hatchback.jpg",imagemUrl);
+            assertEquals("https://www.hondacaiuas.com.br/wp-content/uploads/2022/08/tipos-de-carro-hatch-new-city-hatchback.jpg", imagemUrl);
         }
 
         @Test
         @DisplayName("Should not stay the message of edit with success after delete it")
-        void ShouldNotStayTheMessageOfEditWithSuccessAfterDeleteIt(){
-            createItemToTestUpdate();
+        void ShouldNotStayTheMessageOfEditWithSuccessAfterDeleteIt() {
+            updateAndViewMeme.createItemToTestUpdate();
 
             updateAndViewMeme.editButton();
 
@@ -566,45 +509,43 @@ public class EdicaoEVisualizacaoMemePageTest {
             }
 
 
-
         }
 
 
     }
 
 
-
-
     @Nested
     @DisplayName("Semantic html tests")
-    class SemanticHTML{
+    class SemanticHTML {
         @Test
         @DisplayName("Table should have the correct html semantics")
-        void tableShouldHaveTheCorrectSemantics(){
+        void tableShouldHaveTheCorrectSemantics() {
             boolean isSemanticCorrect = updateAndViewMeme.tableViewHasCorrectSemanticTable();
             assertTrue(isSemanticCorrect);
         }
 
         @Test
         @DisplayName("Text should have the correct html semantics")
-        void textShouldHaveTheCorrectHtmlSemantics(){
+        void textShouldHaveTheCorrectHtmlSemantics() {
             boolean isSemanticCorrect = updateAndViewMeme.isTextSemanticCorrect();
             assertTrue(isSemanticCorrect);
         }
 
         @Test
         @DisplayName("Table comments should have the correct html semantics")
-        void tableCommentsShouldHaveTheCorrectHtmlSemantics(){
-            createItemToTestUpdate();
+        void tableCommentsShouldHaveTheCorrectHtmlSemantics() {
+            updateAndViewMeme.createItemToTestUpdate();
             updateAndViewMeme.commentButton();
 
             boolean isSemanticCorrect = updateAndViewMeme.tableViewHasCorrectsemanticCommentsTable();
             assertTrue(isSemanticCorrect);
         }
+
         @Test
         @DisplayName("Comment text should have the correct html semantics")
-        void commentTextShouldHaveTheCorrectHtmlSemantics(){
-            createItemToTestUpdate();
+        void commentTextShouldHaveTheCorrectHtmlSemantics() {
+            updateAndViewMeme.createItemToTestUpdate();
             updateAndViewMeme.commentButton();
 
             boolean isSemanticCorrect = updateAndViewMeme.isCommentTextSemantiCorrect();
@@ -614,12 +555,12 @@ public class EdicaoEVisualizacaoMemePageTest {
     }
 
     @Nested
-    @DisplayName("remove test")
-    class RemoveTests{
+    @DisplayName("remove functionality test")
+    class RemoveTests {
         @Test
         @DisplayName("Should remove message is right")
-        void ShouldRemoveRemoveMessageIsRight(){
-            createItemToTestUpdate();
+        void ShouldRemoveRemoveMessageIsRight() {
+            updateAndViewMeme.createItemToTestUpdate();
 
             updateAndViewMeme.removeButton();
             String deleteMessage = driver.findElement(By.id("deleteMessage")).getText();
@@ -630,15 +571,15 @@ public class EdicaoEVisualizacaoMemePageTest {
         @Test
         @DisplayName("Should remove with success")
         void ShouldRemoveWithSuccess() throws InterruptedException {
-            createItemToTestUpdate();
+            updateAndViewMeme.createItemToTestUpdate();
 
             int before = updateAndViewMeme.getQuantityOfRows();
             updateAndViewMeme.removeButton();
             int after = updateAndViewMeme.getQuantityOfRows();
 
-            if(after < before){
+            if (after < before) {
                 assertTrue(true);
-            }else{
+            } else {
                 fail("O elemento não foi apagado");
             }
 
@@ -647,13 +588,13 @@ public class EdicaoEVisualizacaoMemePageTest {
     }
 
     @Nested
-    @DisplayName("Comments tests")
+    @DisplayName("Comments functionality tests")
     class CommentsTest {
 
         @Test
         @DisplayName("Should open the comment modal")
         void ShouldOpenTheCommentModal() {
-            createItemToTestUpdate();
+            updateAndViewMeme.createItemToTestUpdate();
 
 
             try {
@@ -671,7 +612,8 @@ public class EdicaoEVisualizacaoMemePageTest {
         @Test
         @DisplayName("Should comment with success")
         void ShouldCommentWithSuccess() {
-            createItemToTestUpdate();
+            updateAndViewMeme.createItemToTestUpdate();
+
             try {
                 updateAndViewMeme.commentButton();
                 driver.findElement(By.id("newComment")).sendKeys("New Comment");
@@ -686,10 +628,48 @@ public class EdicaoEVisualizacaoMemePageTest {
 
         }
 
+
+        @Test
+        @DisplayName("Should handle large comment that exceeds modal width")
+        void shouldHandleLargeCommentExceedingModalWidth() {
+            updateAndViewMeme.createItemToTestUpdate();
+
+            updateAndViewMeme.commentButton();
+
+            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(1));
+            wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='commentsPopup']/div")));
+
+
+            String largeComment = "This is a very long comment that will test how the modal handles content that exceeds the modal width. This is a test to see how the comment behaves when it is too wide for the modal container. Let's check if the modal handles overflow properly.";
+            driver.findElement(By.id("newComment")).sendKeys(largeComment);
+            driver.findElement(By.xpath("//*[@id=\"commentForm\"]/button")).click();
+
+
+            WebElement commentModal = driver.findElement(By.xpath("//*[@id='commentsPopup']/div"));
+            String overflowX = commentModal.getCssValue("overflow-x");
+
+
+            assertTrue(overflowX.equals("auto") || overflowX.equals("scroll"), "O modal permite overflow horizontal.");
+
+
+            List<WebElement> comments = driver.findElements(By.xpath("//div[@class='comment-item']"));
+            assertFalse(comments.isEmpty(), "O comentário grande não foi adicionado.");
+
+
+            String commentText = comments.get(comments.size() - 1).getText();
+            assertTrue(commentText.length() < largeComment.length(), "O comentário grande não foi truncado corretamente.");
+        }
+
+
+    }
+
+    @Nested
+    @DisplayName("Comments UI tests")
+    class CommentsUITests {
         @Test
         @DisplayName("Should not stay the message of add comment with success after close and open the modal")
         void shouldNotStayTheMessageOfAddCommentWithSuccessAfterCloseAndOpenTheModal() {
-            createItemToTestUpdate();
+            updateAndViewMeme.createItemToTestUpdate();
 
             try {
                 updateAndViewMeme.commentButton();
@@ -707,41 +687,5 @@ public class EdicaoEVisualizacaoMemePageTest {
 
         }
 
-
-        @Test
-        @DisplayName("Should handle large comment that exceeds modal width")
-        void shouldHandleLargeCommentExceedingModalWidth() {
-            createItemToTestUpdate();
-
-            updateAndViewMeme.commentButton(); // Abre o modal
-
-            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(1));
-            wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='commentsPopup']/div")));
-
-            // Adicionando um comentário largo (em largura)
-            String largeComment = "This is a very long comment that will test how the modal handles content that exceeds the modal width. This is a test to see how the comment behaves when it is too wide for the modal container. Let's check if the modal handles overflow properly.";
-            driver.findElement(By.id("newComment")).sendKeys(largeComment);
-            driver.findElement(By.xpath("//*[@id=\"commentForm\"]/button")).click();
-
-
-            // Verificar se o modal tem overflow
-            WebElement commentModal = driver.findElement(By.xpath("//*[@id='commentsPopup']/div"));
-            String overflowX = commentModal.getCssValue("overflow-x");
-
-            // O modal não deve permitir overflow horizontal ou deve exibir uma barra de rolagem
-            assertTrue(overflowX.equals("auto") || overflowX.equals("scroll"), "O modal permite overflow horizontal.");
-
-            // Verifique se o comentário foi corretamente adicionado ao final da lista
-            List<WebElement> comments = driver.findElements(By.xpath("//div[@class='comment-item']"));
-            assertFalse(comments.isEmpty(), "O comentário grande não foi adicionado.");
-
-            // Verifique se o comentário grande não saiu pela lateral
-            String commentText = comments.get(comments.size() - 1).getText();
-            assertTrue(commentText.length() < largeComment.length(), "O comentário grande não foi truncado corretamente.");
-        }
-
-
     }
-
-
 }
