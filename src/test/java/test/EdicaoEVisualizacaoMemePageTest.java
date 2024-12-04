@@ -327,6 +327,35 @@ public class EdicaoEVisualizacaoMemePageTest {
             softly.assertAll();
         }
 
+        @Test
+        @DisplayName("Should display error message when try edit title to text shorter than 3 characters")
+        void shouldDisplayErrorMessageWhenTryEditTitleToTextShorterThan3Characters() {
+
+            createItemToTestUpdate();
+
+            updateAndViewMeme.editButton();
+
+
+
+
+            updateAndViewMeme.clearFields(
+                    Arrays.asList(
+                            updateAndViewMeme.getEditTitleInput()
+                    )
+            );
+
+
+
+            driver.findElement(updateAndViewMeme.getEditTitleInput()).sendKeys("oi");
+
+
+            updateAndViewMeme.clickInSave();
+
+
+            assertTrue(updateAndViewMeme.isErrorMessageDisplayed());
+
+        }
+
 
     }
 
