@@ -1,7 +1,5 @@
 package test;
 
-
-
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.*;
@@ -117,19 +115,6 @@ public class EdicaoEVisualizacaoMemePageTest {
 
     }
 
-    @Test
-    @DisplayName("Table should have the correct html semantics")
-    void tableShouldHaveTheCorrectSemantics(){
-        boolean isSemanticCorrect = updateAndViewMeme.isTableSemanticCorrect();
-        assertTrue(isSemanticCorrect);
-    }
-
-    @Test
-    @DisplayName("Text should have the correct html semantics")
-    void TextShouldHaveTheCorrectHtmlSemantics(){
-        boolean isSemanticCorrect = updateAndViewMeme.isTextSemanticCorrect();
-        assertTrue(isSemanticCorrect);
-    }
 
     @Nested
     @DisplayName("Edit meme test")
@@ -202,6 +187,24 @@ public class EdicaoEVisualizacaoMemePageTest {
 
         }
 
+
+    }
+    @Nested
+    @DisplayName("Semantic html tests")
+    class SemanticHTML{
+        @Test
+        @DisplayName("Table should have the correct html semantics")
+        void tableShouldHaveTheCorrectSemantics(){
+            boolean isSemanticCorrect = updateAndViewMeme.isTableSemanticCorrect();
+            assertTrue(isSemanticCorrect);
+        }
+
+        @Test
+        @DisplayName("Text should have the correct html semantics")
+        void TextShouldHaveTheCorrectHtmlSemantics(){
+            boolean isSemanticCorrect = updateAndViewMeme.isTextSemanticCorrect();
+            assertTrue(isSemanticCorrect);
+        }
 
     }
 
