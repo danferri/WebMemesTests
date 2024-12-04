@@ -356,6 +356,36 @@ public class EdicaoEVisualizacaoMemePageTest {
 
         }
 
+        @Test
+        @DisplayName("Should display error message when try edit title to text bigger than 50 characters")
+        void shouldDisplayErrorMessageWhenTryEditTitleToTextBiggerThan50Characters() {
+
+            createItemToTestUpdate();
+
+            updateAndViewMeme.editButton();
+
+
+
+
+            updateAndViewMeme.clearFields(
+                    Arrays.asList(
+                            updateAndViewMeme.getEditTitleInput()
+                    )
+            );
+
+
+
+            driver.findElement(updateAndViewMeme.getEditTitleInput()).sendKeys("Lorem ipsum dolor sit amet, " +
+                    "consectetur adipiscing elit. Nullam scelerisque orci vitae sapien interdum, id dignissim lectus porttitor.");
+
+
+            updateAndViewMeme.clickInSave();
+
+
+            assertTrue(updateAndViewMeme.isErrorMessageDisplayed());
+
+        }
+
 
     }
 
