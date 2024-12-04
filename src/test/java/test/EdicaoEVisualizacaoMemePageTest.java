@@ -253,6 +253,44 @@ public class EdicaoEVisualizacaoMemePageTest {
 
         }
 
+        @Test
+        @DisplayName("Should not edit title when text shorter than 3 characters")
+        void shouldNotEditTitleWhenTextShorterThan3Character() {
+
+            createItemToTestUpdate();
+
+            updateAndViewMeme.editButton();
+
+            SoftAssertions softly = new SoftAssertions();
+
+
+            String titleValueBeforeTryingToEdit = driver.findElement(updateAndViewMeme.getEditTitleInput()).getAttribute("value");
+
+
+            updateAndViewMeme.clearFields(
+                    Arrays.asList(
+                            updateAndViewMeme.getEditTitleInput()
+                    )
+            );
+
+
+
+            driver.findElement(updateAndViewMeme.getEditTitleInput()).sendKeys("oi");
+
+
+            updateAndViewMeme.clickInSave();
+
+
+            String titleThatWasRecorded = driver.findElement(By.xpath("//*[@id=\"memeList\"]/tr/td[2]")).getText();
+
+            softly.assertThat(titleThatWasRecorded)
+                    .as("O titulo não deveria ter sido atualizado")
+                    .isEqualTo(titleValueBeforeTryingToEdit);
+
+
+            softly.assertAll();
+        }
+
     }
 
 
