@@ -68,9 +68,4 @@ public class CadastroMemePage {
         return driver.findElement(messageSpam).getText().equals(message);
     }
 
-//    public boolean checkMessageTitleErrorAndUrlError() {
-//        String message = "O título deve ter entre 3 e 50 caracteres.\n Por favor, insira uma URL válida.";
-//        return driver.findElement(messageSpam).getText().equals(message);
-//    }
-
 }
