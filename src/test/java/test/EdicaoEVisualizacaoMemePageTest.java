@@ -713,29 +713,29 @@ public class EdicaoEVisualizacaoMemePageTest {
         void shouldHandleLargeCommentExceedingModalWidth() {
             createItemToTestUpdate();
 
-            updateAndViewMeme.commentButton(); // Abre o modal
+            updateAndViewMeme.commentButton();
 
             WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(1));
             wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='commentsPopup']/div")));
 
-            // Adicionando um comentário largo (em largura)
+
             String largeComment = "This is a very long comment that will test how the modal handles content that exceeds the modal width. This is a test to see how the comment behaves when it is too wide for the modal container. Let's check if the modal handles overflow properly.";
             driver.findElement(By.id("newComment")).sendKeys(largeComment);
             driver.findElement(By.xpath("//*[@id=\"commentForm\"]/button")).click();
 
 
-            // Verificar se o modal tem overflow
+
             WebElement commentModal = driver.findElement(By.xpath("//*[@id='commentsPopup']/div"));
             String overflowX = commentModal.getCssValue("overflow-x");
 
-            // O modal não deve permitir overflow horizontal ou deve exibir uma barra de rolagem
+
             assertTrue(overflowX.equals("auto") || overflowX.equals("scroll"), "O modal permite overflow horizontal.");
 
-            // Verifique se o comentário foi corretamente adicionado ao final da lista
+
             List<WebElement> comments = driver.findElements(By.xpath("//div[@class='comment-item']"));
             assertFalse(comments.isEmpty(), "O comentário grande não foi adicionado.");
 
-            // Verifique se o comentário grande não saiu pela lateral
+
             String commentText = comments.get(comments.size() - 1).getText();
             assertTrue(commentText.length() < largeComment.length(), "O comentário grande não foi truncado corretamente.");
         }
