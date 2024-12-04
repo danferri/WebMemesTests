@@ -1,6 +1,7 @@
 package test;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
+import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -9,6 +10,7 @@ import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import page.EdicaoEVisualizacaoMemePage;
 import java.time.Duration;
+import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
 import static org.junit.jupiter.api.Assertions.*;
@@ -113,6 +115,318 @@ public class EdicaoEVisualizacaoMemePageTest {
 
 
     }
+
+    @Nested
+    @DisplayName("Validation test for checks performed during registration to ensure they are valided during editing")
+    class ValidateRoles{
+        @Test
+        @DisplayName("Should error message when try edit mandatory fields to empty")
+        void shouldErrorMessageWhenTryEditMandatoryFieldsToEmpty() {
+            createItemToTestUpdate();
+
+            updateAndViewMeme.editButton();
+
+            updateAndViewMeme.clearFields(
+                    Arrays.asList(
+                            updateAndViewMeme.getEditUrlInput(),
+                            updateAndViewMeme.getEditTitleInput()
+                    )
+            );
+
+            updateAndViewMeme.clickInSave();
+
+            assertTrue(updateAndViewMeme.isErrorMessageDisplayed());
+
+        }
+
+        @Test
+        @DisplayName("Should not edit message when edit mandatory fields to empty")
+        void shouldNotEditMessageWhenEditMandatoryFieldsToEmpty(){
+            createItemToTestUpdate();
+
+            updateAndViewMeme.editButton();
+
+            String urlValueBeforeTryingToEdit = driver.findElement(updateAndViewMeme.getEditUrlInput()).getAttribute("value");
+            String titleValueBeforeTryingToEdit = driver.findElement(updateAndViewMeme.getEditTitleInput()).getAttribute("value");
+
+
+            updateAndViewMeme.clearFields(
+                    Arrays.asList(
+                            updateAndViewMeme.getEditUrlInput(),
+                            updateAndViewMeme.getEditTitleInput()
+                    )
+            );
+
+            updateAndViewMeme.clickInSave();
+
+            String urlThatWasRecorded  =
+                    driver.findElement(By.xpath("//*[@id=\"memeList\"]/tr/td[1]/img")).getAttribute("src");
+
+            String titleThatWasRecorded  =
+                    driver.findElement(By.xpath("//*[@id=\"memeList\"]/tr/td[2]")).getText();
+
+            assertEquals(urlThatWasRecorded, urlValueBeforeTryingToEdit);
+            assertEquals(titleThatWasRecorded, titleValueBeforeTryingToEdit);
+
+        }
+
+
+        @Test
+        @DisplayName("Should not edit select and url for types that are incompatible with each other")
+        void shouldNotEditSelectAndUrlForTypesIncompatible() {
+
+            createItemToTestUpdate();
+
+            updateAndViewMeme.editButton();
+
+            SoftAssertions softly = new SoftAssertions();
+
+            WebElement selectElement = driver.findElement(updateAndViewMeme.getSelect());
+            WebElement selectedValueBeforeTryingToEdit = new Select(selectElement).getFirstSelectedOption();
+            String urlValueBeforeTryingToEdit = driver.findElement(updateAndViewMeme.getEditUrlInput()).getAttribute("value");
+
+
+            updateAndViewMeme.clearFields(
+                    Arrays.asList(
+                            updateAndViewMeme.getEditUrlInput()
+                    )
+            );
+
+
+            Select select = new Select(selectElement);
+
+            select.selectByIndex(0);
+            driver.findElement(updateAndViewMeme.getEditUrlInput()).sendKeys("https://www.youtube.com/watch?v=V5vWvs2clBw&list=PLL34mf651faO1vJWlSoYYBJejN9U_rwy-&index=2");
+
+
+            updateAndViewMeme.clickInSave();
+
+
+            String urlThatWasRecorded = driver.findElement(By.xpath("//*[@id=\"memeList\"]/tr/td[1]/img")).getAttribute("src");
+
+            softly.assertThat(urlThatWasRecorded)
+                    .as("A URL não deveria ter sido atualizada")
+                    .isEqualTo(urlValueBeforeTryingToEdit);
+
+
+            WebElement selectedValueAfterTryingToEdit = new Select(selectElement).getFirstSelectedOption();
+            softly.assertThat(selectedValueAfterTryingToEdit.getText())
+                    .as("O valor do select não deveria ter sido alterado")
+                    .isEqualTo(selectedValueBeforeTryingToEdit.getText());
+
+
+            softly.assertAll();
+        }
+
+
+
+        @Test
+        @DisplayName("Should display error message when try edit select and url for types that are incompatible with each other")
+        void shouldDisplayErrorMessageWhenTryEditSelectAndUrlForTypesIncompatible() {
+
+            createItemToTestUpdate();
+
+            updateAndViewMeme.editButton();
+
+            WebElement selectElement = driver.findElement(updateAndViewMeme.getSelect());
+
+
+            updateAndViewMeme.clearFields(
+                    Arrays.asList(
+                            updateAndViewMeme.getEditUrlInput()
+                    )
+            );
+
+
+            Select select = new Select(selectElement);
+
+            select.selectByIndex(0);
+            driver.findElement(updateAndViewMeme.getEditUrlInput()).sendKeys("https://www.youtube.com/watch?v=V5vWvs2clBw&list=PLL34mf651faO1vJWlSoYYBJejN9U_rwy-&index=2");
+
+
+            updateAndViewMeme.clickInSave();
+
+
+            assertTrue(updateAndViewMeme.isErrorMessageDisplayed());
+
+        }
+
+        @Test
+        @DisplayName("Should not edit title when text shorter than 3 characters")
+        void shouldNotEditTitleWhenTextShorterThan3Character() {
+
+            createItemToTestUpdate();
+
+            updateAndViewMeme.editButton();
+
+            SoftAssertions softly = new SoftAssertions();
+
+
+            String titleValueBeforeTryingToEdit = driver.findElement(updateAndViewMeme.getEditTitleInput()).getAttribute("value");
+
+
+            updateAndViewMeme.clearFields(
+                    Arrays.asList(
+                            updateAndViewMeme.getEditTitleInput()
+                    )
+            );
+
+
+
+            driver.findElement(updateAndViewMeme.getEditTitleInput()).sendKeys("oi");
+
+
+            updateAndViewMeme.clickInSave();
+
+
+            String titleThatWasRecorded = driver.findElement(By.xpath("//*[@id=\"memeList\"]/tr/td[2]")).getText();
+
+            softly.assertThat(titleThatWasRecorded)
+                    .as("O titulo não deveria ter sido atualizado")
+                    .isEqualTo(titleValueBeforeTryingToEdit);
+
+
+            softly.assertAll();
+        }
+
+        @Test
+        @DisplayName("Should not edit title when text bigger than 50 characters")
+        void shouldNotEditTitleWhenTextBiggerThan50Character() {
+
+            createItemToTestUpdate();
+
+            updateAndViewMeme.editButton();
+
+            SoftAssertions softly = new SoftAssertions();
+
+
+            String titleValueBeforeTryingToEdit = driver.findElement(updateAndViewMeme.getEditTitleInput()).getAttribute("value");
+
+
+            updateAndViewMeme.clearFields(
+                    Arrays.asList(
+                            updateAndViewMeme.getEditTitleInput()
+                    )
+            );
+
+
+
+            driver.findElement(updateAndViewMeme.getEditTitleInput()).sendKeys("Lorem ipsum dolor sit amet," +
+                    " consectetur adipiscing elit. Nullam scelerisque orci vitae sapien interdum, id dignissim lectus porttitor.");
+
+
+            updateAndViewMeme.clickInSave();
+
+
+            String titleThatWasRecorded = driver.findElement(By.xpath("//*[@id=\"memeList\"]/tr/td[2]")).getText();
+
+            softly.assertThat(titleThatWasRecorded)
+                    .as("O titulo não deveria ter sido atualizado")
+                    .isEqualTo(titleValueBeforeTryingToEdit);
+
+
+            softly.assertAll();
+        }
+
+        @Test
+        @DisplayName("Should display error message when try edit title to text shorter than 3 characters")
+        void shouldDisplayErrorMessageWhenTryEditTitleToTextShorterThan3Characters() {
+
+            createItemToTestUpdate();
+
+            updateAndViewMeme.editButton();
+
+
+
+
+            updateAndViewMeme.clearFields(
+                    Arrays.asList(
+                            updateAndViewMeme.getEditTitleInput()
+                    )
+            );
+
+
+
+            driver.findElement(updateAndViewMeme.getEditTitleInput()).sendKeys("oi");
+
+
+            updateAndViewMeme.clickInSave();
+
+
+            assertTrue(updateAndViewMeme.isErrorMessageDisplayed());
+
+        }
+
+        @Test
+        @DisplayName("Should display error message when try edit title to text bigger than 50 characters")
+        void shouldDisplayErrorMessageWhenTryEditTitleToTextBiggerThan50Characters() {
+
+            createItemToTestUpdate();
+
+            updateAndViewMeme.editButton();
+
+
+            updateAndViewMeme.clearFields(
+                    Arrays.asList(
+                            updateAndViewMeme.getEditTitleInput()
+                    )
+            );
+
+
+
+            driver.findElement(updateAndViewMeme.getEditTitleInput()).sendKeys("Lorem ipsum dolor sit amet, " +
+                    "consectetur adipiscing elit. Nullam scelerisque orci vitae sapien interdum, id dignissim lectus porttitor.");
+
+
+            updateAndViewMeme.clickInSave();
+
+
+            assertTrue(updateAndViewMeme.isErrorMessageDisplayed());
+
+        }
+
+        @Test
+        @DisplayName("Should be possible to edit description to empty")
+        void shouldBePossibleToEditDescriptionToEmpty() {
+
+            createItemToTestUpdate();
+
+            updateAndViewMeme.editButton();
+
+            SoftAssertions softly = new SoftAssertions();
+
+            String newValue = "";
+
+            String displayTextInTableWhenValueIsEmpty = "-";
+
+            updateAndViewMeme.clearFields(
+                    Arrays.asList(
+                            updateAndViewMeme.getEditDescriptionInput()
+                    )
+            );
+
+            driver.findElement(updateAndViewMeme.getEditDescriptionInput()).sendKeys(newValue);
+
+            updateAndViewMeme.clickInSave();
+
+            String descriptionThatWasRecorded = driver.findElement(By.xpath("//*[@id=\"memeList\"]/tr[1]/td[3]")).getText();
+
+            softly.assertThat(descriptionThatWasRecorded)
+                    .as("A descrição deveria estar vazia após a edição")
+                    .isEqualTo(displayTextInTableWhenValueIsEmpty);
+
+            softly.assertAll();
+        }
+
+
+
+
+
+    }
+
+
+
+
 
 
     @Nested

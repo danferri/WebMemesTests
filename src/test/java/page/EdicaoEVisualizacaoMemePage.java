@@ -5,13 +5,10 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-
-import java.sql.Array;
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class EdicaoEVisualizacaoMemePage {
     protected final WebDriver driver;
@@ -21,7 +18,16 @@ public class EdicaoEVisualizacaoMemePage {
     private final By anteriorButton = By.xpath("//*[@id=\"prevPage\"]");
     private final By numeroPagina = By.xpath("//*[@id=\"pageIndicator\"]");
     private final By tableView = By.xpath("//*[@id=\"memeTable\"]");
+
     private final By tableCommentsView = By.xpath("//*[@id=\"commentsTable\"]");
+
+    private final By editDescriptionInput = By.xpath("//*[@id=\"comment\"]");
+
+    private final By message = By.xpath("//*[@id=\"message\"]");
+    private final By editUrlInput = By.xpath("//*[@id=\"url\"]");
+    private final By saveButton = By.id("submitMeme");
+    private final By editTitleInput = By.xpath("//*[@id=\"title\"]");
+
     private final By title = By.xpath("/html/body/h1");
     private final By editarMeme = By.xpath("/html/body/div[3]/h2");
     private final By editButton = By.xpath("//*[@id=\"memeList\"]/tr/td[5]/button[1]");
@@ -29,6 +35,10 @@ public class EdicaoEVisualizacaoMemePage {
     private final By removeButton = By.xpath("//*[@id=\"memeList\"]/tr/td[5]/button[2]");
     private final By comentariosButton = By.xpath("//*[@id=\"memeList\"]/tr/td[4]/button");
     private final By commentTitle = By.xpath("//*[@id=\"commentsPopup\"]/div/h2");
+
+    private final By select = By.id("type");
+
+
 
 
         public EdicaoEVisualizacaoMemePage(WebDriver driver) {
@@ -59,6 +69,26 @@ public class EdicaoEVisualizacaoMemePage {
         return proximoButtonElement.isEnabled();
     }
 
+    public By getSelect(){
+            return select;
+    }
+
+    public By getSaveButton(){
+            return saveButton;
+    }
+
+    public By getEditDescriptionInput(){
+       return editDescriptionInput;
+    }
+
+    public By getEditUrlInput(){
+        return editUrlInput;
+    }
+
+    public By getEditTitleInput(){
+        return editTitleInput;
+    }
+
     public void goToNextPage(){
         driver.findElement(proximoButton).click();
     }
@@ -71,6 +101,10 @@ public class EdicaoEVisualizacaoMemePage {
     }
     public void editButton(){
         driver.findElement(editButton).click();
+    }
+
+    public void clickInSave(){
+        driver.findElement(saveButton).click();
     }
 
     public void removeButton(){
@@ -100,6 +134,42 @@ public class EdicaoEVisualizacaoMemePage {
 
         return tbody.findElements(By.tagName("tr")).size();
     }
+
+    public void clearFields(List<By> locators) {
+        for (By locator : locators) {
+            try {
+                WebElement element = driver.findElement(locator);
+                element.clear();
+
+            } catch (Exception e) {
+                System.err.println("Erro ao limpar o campo localizado por " + locator + ": " + e.getMessage());
+            }
+        }
+    }
+
+
+    public boolean isErrorMessageDisplayed() {
+        try {
+            String[] errorMessages = {
+                    "A URL não corresponde ao tipo selecionado (imagem ou vídeo).",
+                    "O título deve ter entre 3 e 50 caracteres.",
+                    "URL inválida para o tipo selecionado."
+            };
+
+
+            if (driver.findElements(message).isEmpty()) return false;
+
+
+            String actualMessage = driver.findElement(message).getText();
+
+
+            return Arrays.asList(errorMessages).contains(actualMessage);
+        } catch (Exception e) {
+            System.err.println("Erro ao verificar a mensagem: " + e.getMessage());
+            return false;
+        }
+    }
+
 
 
     public boolean isTableSemanticCorrect(By tableBy) {
