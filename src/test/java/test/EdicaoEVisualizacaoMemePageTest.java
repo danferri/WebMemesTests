@@ -9,6 +9,7 @@ import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import page.EdicaoEVisualizacaoMemePage;
 import java.time.Duration;
+import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
 import static org.junit.jupiter.api.Assertions.*;
@@ -111,6 +112,33 @@ public class EdicaoEVisualizacaoMemePageTest {
         }
 
 
+
+    }
+
+    @Nested
+    @DisplayName("Validation test for checks performed during registration to ensure they are valided during editing")
+    class ValidateRoles{
+        @Test
+        @DisplayName("Should error message when try edit mandatory fields to empty")
+        void shouldErrorMessageWhenTryEditMandatoryFieldsToEmpty() {
+            createItemToTestUpdate();
+
+            updateAndViewMeme.editButton();
+
+            updateAndViewMeme.clearFields(
+                    Arrays.asList(
+                            updateAndViewMeme.getEditUrlInput(),
+                            updateAndViewMeme.getEditTitleInput()
+                    )
+            );
+
+            updateAndViewMeme.clickInSave();
+
+            assertTrue(updateAndViewMeme.isErrorMessageDisplayed());
+
+
+
+        }
 
     }
 
