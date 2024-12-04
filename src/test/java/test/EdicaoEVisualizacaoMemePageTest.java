@@ -385,6 +385,40 @@ public class EdicaoEVisualizacaoMemePageTest {
 
         }
 
+        @Test
+        @DisplayName("Should be possible to edit description to empty")
+        void shouldBePossibleToEditDescriptionToEmpty() {
+
+            createItemToTestUpdate();
+
+            updateAndViewMeme.editButton();
+
+            SoftAssertions softly = new SoftAssertions();
+
+            String newValue = "";
+
+            String displayTextInTableWhenValueIsEmpty = "-";
+
+            updateAndViewMeme.clearFields(
+                    Arrays.asList(
+                            updateAndViewMeme.getEditDescriptionInput()
+                    )
+            );
+
+            driver.findElement(updateAndViewMeme.getEditDescriptionInput()).sendKeys(newValue);
+
+            updateAndViewMeme.clickInSave();
+
+            String descriptionThatWasRecorded = driver.findElement(By.xpath("//*[@id=\"memeList\"]/tr[1]/td[3]")).getText();
+
+            softly.assertThat(descriptionThatWasRecorded)
+                    .as("A descrição deveria estar vazia após a edição")
+                    .isEqualTo(displayTextInTableWhenValueIsEmpty);
+
+            softly.assertAll();
+        }
+
+
 
 
 
