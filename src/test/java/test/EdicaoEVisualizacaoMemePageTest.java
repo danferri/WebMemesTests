@@ -189,13 +189,17 @@ public class EdicaoEVisualizacaoMemePageTest {
 
 
     }
+
+
+
+
     @Nested
     @DisplayName("Semantic html tests")
     class SemanticHTML{
         @Test
         @DisplayName("Table should have the correct html semantics")
         void tableShouldHaveTheCorrectSemantics(){
-            boolean isSemanticCorrect = updateAndViewMeme.isTableSemanticCorrect();
+            boolean isSemanticCorrect = updateAndViewMeme.tableViewHasCorrectSemanticTable();
             assertTrue(isSemanticCorrect);
         }
 
