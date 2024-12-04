@@ -31,6 +31,8 @@ public class CadastroMemePage {
         driver.findElement(visualizarMemesLink).click();
     }
 
+
+
     public void cadastroMemeFromMeme(Meme meme) {
         Select selectTipo = new Select(driver.findElement(tipoMemeSelect));
         selectTipo.selectByValue(meme.getTipo().getString());
@@ -65,10 +67,5 @@ public class CadastroMemePage {
         String message = "O comentário não pode ter mais de 50 caracteres.";
         return driver.findElement(messageSpam).getText().equals(message);
     }
-
-//    public boolean checkMessageTitleErrorAndUrlError() {
-//        String message = "O título deve ter entre 3 e 50 caracteres.\n Por favor, insira uma URL válida.";
-//        return driver.findElement(messageSpam).getText().equals(message);
-//    }
 
 }
