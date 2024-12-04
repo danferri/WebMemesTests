@@ -311,7 +311,8 @@ public class EdicaoEVisualizacaoMemePageTest {
 
 
 
-            driver.findElement(updateAndViewMeme.getEditTitleInput()).sendKeys("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam scelerisque orci vitae sapien interdum, id dignissim lectus porttitor.");
+            driver.findElement(updateAndViewMeme.getEditTitleInput()).sendKeys("Lorem ipsum dolor sit amet," +
+                    " consectetur adipiscing elit. Nullam scelerisque orci vitae sapien interdum, id dignissim lectus porttitor.");
 
 
             updateAndViewMeme.clickInSave();
@@ -365,8 +366,6 @@ public class EdicaoEVisualizacaoMemePageTest {
             updateAndViewMeme.editButton();
 
 
-
-
             updateAndViewMeme.clearFields(
                     Arrays.asList(
                             updateAndViewMeme.getEditTitleInput()
@@ -385,6 +384,8 @@ public class EdicaoEVisualizacaoMemePageTest {
             assertTrue(updateAndViewMeme.isErrorMessageDisplayed());
 
         }
+
+
 
 
     }
