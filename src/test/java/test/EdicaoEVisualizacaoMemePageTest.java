@@ -76,19 +76,18 @@ public class EdicaoEVisualizacaoMemePageTest {
         assertTrue(res);
     }
 
-    //issue: o botao "proximo" mesmo sem poder clicar ele nao fica desativo
+
     @Test
     @DisplayName("Should not change when 'Proximo' button is disabled")
     void shouldNotChangeWhenProximoButtonIsDisabled() {
 
-        // Tentando clicar no botão "Proximo" mesmo estando desativado
+
         if (!updateAndViewMeme.getProximo()) {
-            // O clique não deve ter efeito se o botão estiver desativado
+
             String firstPage = updateAndViewMeme.identifyNumberOfPage();
             updateAndViewMeme.goToNextPage();
             String secondPage = updateAndViewMeme.identifyNumberOfPage();
 
-            // Verifica se a página não mudou (pois o botão estava desativado)
             boolean isPageSame = firstPage.equals(secondPage);
             assertTrue(isPageSame, "A página não deveria ter mudado, pois o botão estava desativado");
         } else {
@@ -205,8 +204,18 @@ public class EdicaoEVisualizacaoMemePageTest {
 
         @Test
         @DisplayName("Text should have the correct html semantics")
-        void TextShouldHaveTheCorrectHtmlSemantics(){
+        void textShouldHaveTheCorrectHtmlSemantics(){
             boolean isSemanticCorrect = updateAndViewMeme.isTextSemanticCorrect();
+            assertTrue(isSemanticCorrect);
+        }
+
+        @Test
+        @DisplayName("Table comments should have the correct html semantics")
+        void tableCommentsShouldHaveTheCorrectHtmlSemantics(){
+            createItemToTestUpdate();
+            updateAndViewMeme.commentButton();
+
+            boolean isSemanticCorrect = updateAndViewMeme.tableViewHasCorrectsemanticCommentsTable();
             assertTrue(isSemanticCorrect);
         }
 

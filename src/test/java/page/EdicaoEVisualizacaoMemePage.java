@@ -21,7 +21,7 @@ public class EdicaoEVisualizacaoMemePage {
     private final By anteriorButton = By.xpath("//*[@id=\"prevPage\"]");
     private final By numeroPagina = By.xpath("//*[@id=\"pageIndicator\"]");
     private final By tableView = By.xpath("//*[@id=\"memeTable\"]");
-
+    private final By tableCommentsView = By.xpath("//*[@id=\"commentsTable\"]");
     private final By title = By.xpath("/html/body/h1");
     private final By editarMeme = By.xpath("/html/body/div[3]/h2");
     private final By editButton = By.xpath("//*[@id=\"memeList\"]/tr/td[5]/button[1]");
@@ -79,9 +79,12 @@ public class EdicaoEVisualizacaoMemePage {
         driver.findElement(comentariosButton).click();
     }
 
-    public boolean tableViewHasCorrectSemanticTable()
-    {
+    public boolean tableViewHasCorrectSemanticTable(){
         return isTableSemanticCorrect(tableView);
+    }
+
+    public boolean tableViewHasCorrectsemanticCommentsTable(){
+            return isTableSemanticCorrect(tableCommentsView);
     }
 
 
