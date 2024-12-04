@@ -218,6 +218,41 @@ public class EdicaoEVisualizacaoMemePageTest {
             softly.assertAll();
         }
 
+
+
+        @Test
+        @DisplayName("Should display error message when try edit select and url for types that are incompatible with each other")
+        void shouldDisplayErrorMessageWhenTryEditSelectAndUrlForTypesIncompatible() {
+
+            createItemToTestUpdate();
+
+            updateAndViewMeme.editButton();
+
+            SoftAssertions softly = new SoftAssertions();
+
+            WebElement selectElement = driver.findElement(updateAndViewMeme.getSelect());
+
+
+            updateAndViewMeme.clearFields(
+                    Arrays.asList(
+                            updateAndViewMeme.getEditUrlInput()
+                    )
+            );
+
+
+            Select select = new Select(selectElement);
+
+            select.selectByIndex(0);
+            driver.findElement(updateAndViewMeme.getEditUrlInput()).sendKeys("https://www.youtube.com/watch?v=V5vWvs2clBw&list=PLL34mf651faO1vJWlSoYYBJejN9U_rwy-&index=2");
+
+
+            updateAndViewMeme.clickInSave();
+
+
+            assertTrue(updateAndViewMeme.isErrorMessageDisplayed());
+
+        }
+
     }
 
 
