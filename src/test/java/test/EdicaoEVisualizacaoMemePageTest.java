@@ -1,6 +1,7 @@
 package test;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
+import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -169,7 +170,59 @@ public class EdicaoEVisualizacaoMemePageTest {
 
         }
 
+
+        @Test
+        @DisplayName("Should not edit select and url for types that are incompatible with each other")
+        void shouldNotEditSelectAndUrlForTypesIncompatible() {
+
+            createItemToTestUpdate();
+
+            updateAndViewMeme.editButton();
+
+            SoftAssertions softly = new SoftAssertions();
+
+            WebElement selectElement = driver.findElement(updateAndViewMeme.getSelect());
+            WebElement selectedValueBeforeTryingToEdit = new Select(selectElement).getFirstSelectedOption();
+            String urlValueBeforeTryingToEdit = driver.findElement(updateAndViewMeme.getEditUrlInput()).getAttribute("value");
+
+
+            updateAndViewMeme.clearFields(
+                    Arrays.asList(
+                            updateAndViewMeme.getEditUrlInput()
+                    )
+            );
+
+
+            Select select = new Select(selectElement);
+
+            select.selectByIndex(0);
+            driver.findElement(updateAndViewMeme.getEditUrlInput()).sendKeys("https://www.youtube.com/watch?v=V5vWvs2clBw&list=PLL34mf651faO1vJWlSoYYBJejN9U_rwy-&index=2");
+
+
+            updateAndViewMeme.clickInSave();
+
+
+            String urlThatWasRecorded = driver.findElement(By.xpath("//*[@id=\"memeList\"]/tr/td[1]/img")).getAttribute("src");
+
+            softly.assertThat(urlThatWasRecorded)
+                    .as("A URL não deveria ter sido atualizada")
+                    .isEqualTo(urlValueBeforeTryingToEdit);
+
+
+            WebElement selectedValueAfterTryingToEdit = new Select(selectElement).getFirstSelectedOption();
+            softly.assertThat(selectedValueAfterTryingToEdit.getText())
+                    .as("O valor do select não deveria ter sido alterado")
+                    .isEqualTo(selectedValueBeforeTryingToEdit.getText());
+
+
+            softly.assertAll();
+        }
+
     }
+
+
+
+
 
 
     @Nested
