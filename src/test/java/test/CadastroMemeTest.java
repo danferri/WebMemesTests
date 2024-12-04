@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class CadastroMemeTest {
     private WebDriver driver;
-    private WebDriverWait webDriverWait;
+    static WebDriverWait webDriverWait;
 
     private final String PAGE_URL = "https://webmemes.devhub.dev.br/index.html";
     private CadastroMemePage createMeme;

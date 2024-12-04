@@ -6,6 +6,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
+
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
@@ -66,7 +67,7 @@ public class EdicaoEVisualizacaoMemePage {
     }
 
 
-    public int getQuantityOfRows(){
+    public int getQuantityOfRows() {
 
         WebElement table = new WebDriverWait(driver, Duration.ofSeconds(10))
                 .until(ExpectedConditions.visibilityOfElementLocated(tableView));
@@ -123,7 +124,6 @@ public class EdicaoEVisualizacaoMemePage {
     }
 
 
-
     public boolean isTableSemanticCorrect(By tableBy) {
         try {
 
@@ -169,22 +169,21 @@ public class EdicaoEVisualizacaoMemePage {
         }
     }
 
-    public boolean isCommentTextSemantiCorrect(){
-            try{
-                List<String> titlesTags = Arrays.asList("h1", "h2", "h3", "h4", "h5");
+    public boolean isCommentTextSemantiCorrect() {
+        try {
+            List<String> titlesTags = Arrays.asList("h1", "h2", "h3", "h4", "h5");
 
-                WebElement titleElement = new WebDriverWait(driver, Duration.ofSeconds(5))
-                        .until(ExpectedConditions.visibilityOfElementLocated(commentTitle));
+            WebElement titleElement = new WebDriverWait(driver, Duration.ofSeconds(5))
+                    .until(ExpectedConditions.visibilityOfElementLocated(commentTitle));
 
-                String actualTagNameTitle = titleElement.getTagName();
-                return titlesTags.contains(actualTagNameTitle);
+            String actualTagNameTitle = titleElement.getTagName();
+            return titlesTags.contains(actualTagNameTitle);
 
-            } catch (Exception e) {
-                System.err.println("Erro ao validar a semântica HTML: " + e.getMessage());
-                return false;
-            }
+        } catch (Exception e) {
+            System.err.println("Erro ao validar a semântica HTML: " + e.getMessage());
+            return false;
+        }
     }
-
 
 
     public boolean isTextSemanticCorrect() {
@@ -193,7 +192,7 @@ public class EdicaoEVisualizacaoMemePage {
             List<String> textsTags = Arrays.asList("p", "span");
 
             WebElement titleElement = new WebDriverWait(driver, Duration.ofSeconds(5))
-                        .until(ExpectedConditions.visibilityOfElementLocated(titleText));
+                    .until(ExpectedConditions.visibilityOfElementLocated(titleText));
 
             WebElement editarMemeText = new WebDriverWait(driver, Duration.ofSeconds(5))
                     .until(ExpectedConditions.visibilityOfElementLocated(editarMeme));
@@ -215,8 +214,8 @@ public class EdicaoEVisualizacaoMemePage {
         }
     }
 
-    public void createItemToTestUpdate(){
-       goToRegistrationPage();
+    public void createItemToTestUpdate() {
+        goToRegistrationPage();
         assertEquals("https://webmemes.devhub.dev.br/index.html", driver.getCurrentUrl());
 
         WebElement selectElement = driver.findElement(By.id("type"));
@@ -234,71 +233,74 @@ public class EdicaoEVisualizacaoMemePage {
     }
 
 
-    public void goToRegistrationPage(){
+    public void goToRegistrationPage() {
         driver.findElement(voltarPaginaDeRegistroLink).click();
     }
 
-    public boolean getProximo(){
+    public boolean getProximo() {
         WebElement proximoButtonElement = driver.findElement(proximoButton);
 
         return proximoButtonElement.isEnabled();
     }
 
-    public By getSelect(){
-            return select;
+    public By getSelect() {
+        return select;
     }
 
-    public By getSaveButton(){
-            return saveButton;
+    public By getSaveButton() {
+        return saveButton;
     }
 
-    public By getEditDescriptionInput(){
-       return editDescriptionInput;
+    public By getEditDescriptionInput() {
+        return editDescriptionInput;
     }
 
-    public By getEditUrlInput(){
+    public By getEditUrlInput() {
         return editUrlInput;
     }
 
-    public By getEditTitleInput(){
+    public By getEditTitleInput() {
         return editTitleInput;
     }
 
-    public void goToNextPage(){
+    public void goToNextPage() {
         driver.findElement(proximoButton).click();
     }
 
-    public void goToEditComment(){
+    public void goToEditComment() {
         driver.findElement(editCommentButton).click();
     }
-    public void goToPreviousPage(){
+
+    public void goToPreviousPage() {
         driver.findElement(anteriorButton).click();
     }
 
-    public String identifyNumberOfPage(){
+    public String identifyNumberOfPage() {
         return driver.findElement(numeroPaginaText).getText();
     }
-    public void editButton(){
+
+    public void editButton() {
         driver.findElement(editButton).click();
     }
 
-    public void clickInSave(){
+    public void clickInSave() {
         driver.findElement(saveButton).click();
     }
 
-    public void removeButton(){
+    public void removeButton() {
         driver.findElement(removeButton).click();
     }
-    public void commentButton(){
+
+    public void commentButton() {
         driver.findElement(comentariosButton).click();
     }
 
-    public boolean tableViewHasCorrectSemanticTable(){
+    public boolean tableViewHasCorrectSemanticTable() {
         return isTableSemanticCorrect(tableView);
     }
 
-    public boolean tableViewHasCorrectsemanticCommentsTable(){
-            return isTableSemanticCorrect(tableCommentsView);
+    public boolean tableViewHasCorrectsemanticCommentsTable() {
+        return isTableSemanticCorrect(tableCommentsView);
     }
 
 }
