@@ -240,15 +240,14 @@ public class EdicaoEVisualizacaoMemePageTest {
         void ShouldRemoveWithSuccess() throws InterruptedException {
             createItemToTestUpdate();
 
+            int before = updateAndViewMeme.getQuantityOfRows();
             updateAndViewMeme.removeButton();
+            int after = updateAndViewMeme.getQuantityOfRows();
 
-            try {
-                WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-                wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath("//*[@id='memeList']/tr[1]")));
-
-                fail("O elemento ainda está presente após a remoção.");
-            } catch (TimeoutException e) {
+            if(after < before){
                 assertTrue(true);
+            }else{
+                fail("O elemento não foi apagado");
             }
 
 

@@ -88,6 +88,18 @@ public class EdicaoEVisualizacaoMemePage {
     }
 
 
+    public int getQuantityOfRows(){
+
+        WebElement table = new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(ExpectedConditions.visibilityOfElementLocated(tableView));
+
+        WebElement tbody = table.findElement(By.tagName("tbody"));
+
+        if (tbody == null) return 0;
+
+        return tbody.findElements(By.tagName("tr")).size();
+    }
+
 
     public boolean isTableSemanticCorrect(By tableBy) {
         try {
