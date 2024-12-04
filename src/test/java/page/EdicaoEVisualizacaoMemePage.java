@@ -24,6 +24,8 @@ public class EdicaoEVisualizacaoMemePage {
     private final By editDescriptionInput = By.xpath("//*[@id=\"comment\"]");
 
     private final By message = By.xpath("//*[@id=\"message\"]");
+
+    private final By messageComment = By.xpath("//*[@id=\"commentMessage\"]");
     private final By editUrlInput = By.xpath("//*[@id=\"url\"]");
     private final By saveButton = By.id("submitMeme");
     private final By editTitleInput = By.xpath("//*[@id=\"title\"]");
@@ -35,6 +37,8 @@ public class EdicaoEVisualizacaoMemePage {
     private final By removeButton = By.xpath("//*[@id=\"memeList\"]/tr/td[5]/button[2]");
     private final By comentariosButton = By.xpath("//*[@id=\"memeList\"]/tr/td[4]/button");
     private final By commentTitle = By.xpath("//*[@id=\"commentsPopup\"]/div/h2");
+    private final By editComment = By.xpath("//*[@id=\"commentsList\"]/tr/td[2]/button[1]");
+
 
     private final By select = By.id("type");
 
@@ -91,6 +95,10 @@ public class EdicaoEVisualizacaoMemePage {
 
     public void goToNextPage(){
         driver.findElement(proximoButton).click();
+    }
+
+    public void goToEditComment(){
+        driver.findElement(editComment).click();
     }
     public void goToPreviousPage(){
         driver.findElement(anteriorButton).click();
@@ -161,6 +169,27 @@ public class EdicaoEVisualizacaoMemePage {
 
 
             String actualMessage = driver.findElement(message).getText();
+
+
+            return Arrays.asList(errorMessages).contains(actualMessage);
+        } catch (Exception e) {
+            System.err.println("Erro ao verificar a mensagem: " + e.getMessage());
+            return false;
+        }
+    }
+
+
+    public boolean isErrorMessageInCommentsDisplayed() {
+        try {
+            String[] errorMessages = {
+                    "Erro ao alterar comentário."
+            };
+
+
+            if (driver.findElements(messageComment).isEmpty()) return false;
+
+
+            String actualMessage = driver.findElement(messageComment).getText();
 
 
             return Arrays.asList(errorMessages).contains(actualMessage);

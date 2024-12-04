@@ -418,6 +418,75 @@ public class EdicaoEVisualizacaoMemePageTest {
             softly.assertAll();
         }
 
+        @Test
+        @DisplayName("Should not edit comment to empty")
+        void shouldNotEditCommentToEmpty(){
+            createItemToTestUpdate();
+
+            String lastValue = "last value";
+
+
+            SoftAssertions softly = new SoftAssertions();
+
+
+
+                updateAndViewMeme.commentButton();
+
+                driver.findElement(By.id("newComment")).sendKeys(lastValue);
+                driver.findElement(By.xpath("//*[@id=\"commentForm\"]/button")).click();
+
+
+                updateAndViewMeme.goToEditComment();
+
+                updateAndViewMeme.clearFields(Arrays.asList(By.id("newComment")));
+            driver.findElement(By.xpath("//*[@id=\"commentForm\"]/button")).click();
+
+            String commentThatWasRecorded = driver.findElement(By.xpath("//*[@id=\"commentsList\"]/tr/td[1]")).getText();
+
+
+
+
+            softly.assertThat(lastValue)
+                    .as("O comentário não poderia ser editado para vazio")
+                    .isEqualTo(commentThatWasRecorded);
+
+            softly.assertAll();
+
+
+
+
+
+
+        }
+
+        @Test
+        @DisplayName("should display an error message when the comment cannot be changed")
+        void shouldDisplayAnErrorMessageWhenTheCommentCannotBeChanged(){
+            createItemToTestUpdate();
+
+            String lastValue = "last value";
+
+
+            updateAndViewMeme.commentButton();
+
+            driver.findElement(By.id("newComment")).sendKeys(lastValue);
+            driver.findElement(By.xpath("//*[@id=\"commentForm\"]/button")).click();
+
+
+            updateAndViewMeme.goToEditComment();
+
+            updateAndViewMeme.clearFields(Arrays.asList(By.id("newComment")));
+            driver.findElement(By.xpath("//*[@id=\"commentForm\"]/button")).click();
+
+
+
+
+            assertTrue(updateAndViewMeme.isErrorMessageInCommentsDisplayed());
+
+
+
+        }
+
 
 
 
