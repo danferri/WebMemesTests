@@ -148,7 +148,8 @@ public class EdicaoEVisualizacaoMemePage {
         try {
             String[] errorMessages = {
                     "A URL não corresponde ao tipo selecionado (imagem ou vídeo).",
-                    "O título deve ter entre 3 e 50 caracteres."
+                    "O título deve ter entre 3 e 50 caracteres.",
+                    "URL inválida para o tipo selecionado."
             };
 
 
