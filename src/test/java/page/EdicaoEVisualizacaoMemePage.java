@@ -11,7 +11,6 @@ import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class EdicaoEVisualizacaoMemePage {
     protected final WebDriver driver;
@@ -36,6 +35,8 @@ public class EdicaoEVisualizacaoMemePage {
     private final By removeButton = By.xpath("//*[@id=\"memeList\"]/tr/td[5]/button[2]");
     private final By comentariosButton = By.xpath("//*[@id=\"memeList\"]/tr/td[4]/button");
     private final By commentTitle = By.xpath("//*[@id=\"commentsPopup\"]/div/h2");
+
+    private final By select = By.id("type");
 
 
 
@@ -66,6 +67,10 @@ public class EdicaoEVisualizacaoMemePage {
         WebElement proximoButtonElement = driver.findElement(proximoButton);
 
         return proximoButtonElement.isEnabled();
+    }
+
+    public By getSelect(){
+            return select;
     }
 
     public By getSaveButton(){
