@@ -35,6 +35,7 @@ public class EdicaoEVisualizacaoMemePage {
     private final By removeButton = By.xpath("//*[@id=\"memeList\"]/tr/td[5]/button[2]");
     private final By comentariosButton = By.xpath("//*[@id=\"memeList\"]/tr/td[4]/button");
     private final By commentTitle = By.xpath("//*[@id=\"commentsPopup\"]/div/h2");
+    private final By editComment = By.xpath("//*[@id=\"commentsList\"]/tr/td[2]/button[1]");
 
     private final By select = By.id("type");
 
@@ -91,6 +92,10 @@ public class EdicaoEVisualizacaoMemePage {
 
     public void goToNextPage(){
         driver.findElement(proximoButton).click();
+    }
+
+    public void goToEditComment(){
+        driver.findElement(editComment).click();
     }
     public void goToPreviousPage(){
         driver.findElement(anteriorButton).click();
