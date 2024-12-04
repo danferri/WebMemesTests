@@ -136,7 +136,36 @@ public class EdicaoEVisualizacaoMemePageTest {
 
             assertTrue(updateAndViewMeme.isErrorMessageDisplayed());
 
+        }
 
+        @Test
+        @DisplayName("Should not edit message when edit mandatory fields to empty")
+        void shouldNotEditMessageWhenEditMandatoryFieldsToEmpty(){
+            createItemToTestUpdate();
+
+            updateAndViewMeme.editButton();
+
+            String urlValueBeforeTryingToEdit = driver.findElement(updateAndViewMeme.getEditUrlInput()).getAttribute("value");
+            String titleValueBeforeTryingToEdit = driver.findElement(updateAndViewMeme.getEditTitleInput()).getAttribute("value");
+
+
+            updateAndViewMeme.clearFields(
+                    Arrays.asList(
+                            updateAndViewMeme.getEditUrlInput(),
+                            updateAndViewMeme.getEditTitleInput()
+                    )
+            );
+
+            updateAndViewMeme.clickInSave();
+
+            String urlThatWasRecorded  =
+                    driver.findElement(By.xpath("//*[@id=\"memeList\"]/tr/td[1]/img")).getAttribute("src");
+
+            String titleThatWasRecorded  =
+                    driver.findElement(By.xpath("//*[@id=\"memeList\"]/tr/td[2]")).getText();
+
+            assertEquals(urlThatWasRecorded, urlValueBeforeTryingToEdit);
+            assertEquals(titleThatWasRecorded, titleValueBeforeTryingToEdit);
 
         }
 
