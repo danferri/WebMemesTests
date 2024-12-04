@@ -459,6 +459,34 @@ public class EdicaoEVisualizacaoMemePageTest {
 
         }
 
+        @Test
+        @DisplayName("should display an error message when the comment cannot be changed")
+        void shouldDisplayAnErrorMessageWhenTheCommentCannotBeChanged(){
+            createItemToTestUpdate();
+
+            String lastValue = "last value";
+
+
+            updateAndViewMeme.commentButton();
+
+            driver.findElement(By.id("newComment")).sendKeys(lastValue);
+            driver.findElement(By.xpath("//*[@id=\"commentForm\"]/button")).click();
+
+
+            updateAndViewMeme.goToEditComment();
+
+            updateAndViewMeme.clearFields(Arrays.asList(By.id("newComment")));
+            driver.findElement(By.xpath("//*[@id=\"commentForm\"]/button")).click();
+
+
+
+
+            assertTrue(updateAndViewMeme.isErrorMessageInCommentsDisplayed());
+
+
+
+        }
+
 
 
 
