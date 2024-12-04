@@ -28,6 +28,7 @@ public class EdicaoEVisualizacaoMemePage {
     private final By contadorDePagina = By.xpath("//*[@id=\"pageIndicator\"]");
     private final By removeButton = By.xpath("//*[@id=\"memeList\"]/tr/td[5]/button[2]");
     private final By comentariosButton = By.xpath("//*[@id=\"memeList\"]/tr/td[4]/button");
+    private final By commentTitle = By.xpath("//*[@id=\"commentsPopup\"]/div/h2");
 
 
         public EdicaoEVisualizacaoMemePage(WebDriver driver) {
@@ -146,7 +147,21 @@ public class EdicaoEVisualizacaoMemePage {
         }
     }
 
+    public boolean isCommentTextSemantiCorrect(){
+            try{
+                List<String> titlesTags = Arrays.asList("h1", "h2", "h3", "h4", "h5");
 
+                WebElement titleElement = new WebDriverWait(driver, Duration.ofSeconds(5))
+                        .until(ExpectedConditions.visibilityOfElementLocated(commentTitle));
+
+                String actualTagNameTitle = titleElement.getTagName();
+                return titlesTags.contains(actualTagNameTitle);
+
+            } catch (Exception e) {
+                System.err.println("Erro ao validar a semântica HTML: " + e.getMessage());
+                return false;
+            }
+    }
 
 
 

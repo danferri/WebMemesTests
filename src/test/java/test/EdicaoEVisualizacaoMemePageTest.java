@@ -218,6 +218,15 @@ public class EdicaoEVisualizacaoMemePageTest {
             boolean isSemanticCorrect = updateAndViewMeme.tableViewHasCorrectsemanticCommentsTable();
             assertTrue(isSemanticCorrect);
         }
+        @Test
+        @DisplayName("Comment text should have the correct html semantics")
+        void commentTextShouldHaveTheCorrectHtmlSemantics(){
+            createItemToTestUpdate();
+            updateAndViewMeme.commentButton();
+
+            boolean isSemanticCorrect = updateAndViewMeme.isCommentTextSemantiCorrect();
+            assertTrue(isSemanticCorrect);
+        }
 
     }
 
