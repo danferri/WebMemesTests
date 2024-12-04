@@ -228,8 +228,6 @@ public class EdicaoEVisualizacaoMemePageTest {
 
             updateAndViewMeme.editButton();
 
-            SoftAssertions softly = new SoftAssertions();
-
             WebElement selectElement = driver.findElement(updateAndViewMeme.getSelect());
 
 
