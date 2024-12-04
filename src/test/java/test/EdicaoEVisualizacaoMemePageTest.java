@@ -447,7 +447,7 @@ public class EdicaoEVisualizacaoMemePageTest {
 
 
             softly.assertThat(lastValue)
-                    .as("A descrição deveria estar vazia após a edição")
+                    .as("O comentário não poderia ser editado para vazio")
                     .isEqualTo(commentThatWasRecorded);
 
             softly.assertAll();
